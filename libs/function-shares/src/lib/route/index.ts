@@ -4,7 +4,7 @@ import { env } from 'process';
 import { useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router';
 
-export const isWeb = Capacitor.getPlatform() === 'web';
+export const isWeb = Capacitor.getPlatform() !== 'web';
 type HistoryLocationState = ReturnType<typeof useHistory>;
 type NavigationType = NextRouter & HistoryLocationState;
 export enum SCREEN {
