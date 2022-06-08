@@ -45,7 +45,7 @@ function Products(props: ProductProps) {
                               style={{ width: 172 }}
                               cover={
                                 <Image
-                                  loader={imageLoader}
+                                  // loader={imageLoader}
                                   alt="example"
                                   src={item?.photo}
                                   width={240}

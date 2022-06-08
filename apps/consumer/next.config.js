@@ -6,15 +6,26 @@ const withNx = require('@nrwl/next/plugins/with-nx');
  **/
 const nextConfig = {
   images: {
-    loader: 'custom',
-    path: '',
-    domains: ['cdn.itaphoa.com', 'mio-app-dev.s3.ap-southeast-1.amazonaws.com'],
+    // loader: 'custom',
+    domains: [
+      'cdn.itaphoa.com',
+      'mio-app-dev.s3.ap-southeast-1.amazonaws.com',
+      'mio-app.s3.ap-southeast-1.amazonaws.com'
+    ],
   },
   nx: {
     // Set this to true if you would like to to use SVGR
     // See: https://github.com/gregberge/svgr
     svgr: false,
     swcMinify: true,
+      images: {
+    // loader: 'custom',
+    domains: [
+      'cdn.itaphoa.com',
+      'mio-app-dev.s3.ap-southeast-1.amazonaws.com',
+      'mio-app.s3.ap-southeast-1.amazonaws.com'
+    ],
+  },
     experimental: {
       urlImports: ['https://cdn.skypack.dev'],
       outputStandalone: true,

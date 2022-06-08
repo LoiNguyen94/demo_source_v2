@@ -77,7 +77,7 @@ export function FlashSale({ id, data }: FlashSaleProps) {
                             }}
                             cover={
                               <Image
-                                loader={imageLoader}
+                                // loader={imageLoader}
                                 alt="example"
                                 src={item?.photo}
                                 layout="responsive"

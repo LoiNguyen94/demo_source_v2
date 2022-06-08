@@ -14,7 +14,7 @@ export function CartMioItem({ data }: CartMioItemProps) {
       <div style={{ marginBottom: 22 }}>
         <div className={styles['row_between_center']}>
           <Image
-            loader={imageLoader}
+            // loader={imageLoader}
             alt="alt"
             src={
               'https://cdn.itaphoa.com/photos/de99fd6b7ff717d6afdab779186b51a4.jpg'
