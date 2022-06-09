@@ -2,14 +2,21 @@ import { HomeOutlined } from '@ant-design/icons';
 import { Row, Col } from 'antd';
 import { IAddress } from '@monorepo/model';
 import { SCREEN, useNavigation } from '@monorepo/function-shares';
+import { useRouter } from 'next/router';
 export interface LocationItemProps {
   id?: number;
   type?: string;
   data?: IAddress;
 }
+import { useEffect } from 'react';
 
 export function LocationItem({ type, id, data }: LocationItemProps) {
   const { pushRaw } = useNavigation();
+  const  router  = useRouter();
+  useEffect(() => {
+    // Prefetch the dashboard page
+    router.prefetch(`/location/edit/${data?.id}`);
+  }, []);
   return (
     <div
       style={{

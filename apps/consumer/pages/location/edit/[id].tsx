@@ -1,4 +1,5 @@
 import { TransitionLayout, Header, LocationScreen } from '@monorepo/ui-shares';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import {
   fetchListAddressConfig,
   getListAddressDeliveryApi,
@@ -9,6 +10,11 @@ import { useRouter } from 'next/router';
 const EditAddress = (props) => {
   const { id } = props;
   const router = useRouter();
+
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
+  
   return (
     <TransitionLayout title={'Sửa địa chỉ'}>
       <Header title="Sửa địa chỉ" />
@@ -17,16 +23,16 @@ const EditAddress = (props) => {
   );
 };
 
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   const listAddress = await fetchListAddressConfig();
   const paths = listAddress.map((item) => ({
     params: { id: item.id.toString() },
   }));
 
-  return { paths, fallback: 'blocking' };
+  return { paths, fallback: true };
 };
 
-export const getStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const id = params?.id;
     // const res = await fetch(

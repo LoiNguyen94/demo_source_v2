@@ -53,7 +53,7 @@ export const TransitionLayout = memo(
           <title>{title}</title>
           <meta
             name="viewport"
-            content="target-densitydpi=device-dpi, initial-scale=1.0, user-scalable=no"
+            content="initial-scale=1.0, user-scalable=no"
           />
           <meta property="og:title" content={title} key="title" />
           <meta property="og:description" content={description} />
