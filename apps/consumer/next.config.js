@@ -18,6 +18,9 @@ const nextConfig = {
       },
     ];
   },
+  compiler: {
+    removeConsole: true,
+  },
   nx: {
     // Set this to true if you would like to to use SVGR
     // See: https://github.com/gregberge/svgr
@@ -26,9 +29,6 @@ const nextConfig = {
     experimental: {
       urlImports: ['https://cdn.skypack.dev'],
       outputStandalone: true,
-    },
-    compiler: {
-      removeConsole: true,
     },
     webpack(config, options) {
       config.module.rules.push({
