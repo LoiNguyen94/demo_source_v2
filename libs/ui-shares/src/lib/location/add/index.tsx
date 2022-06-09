@@ -114,7 +114,7 @@ export function LocationScreen(props: LocationProps) {
         fetchListAddressConfig();
         setTimeout(() => {
           dispath(chooseItemAddress({ ...initItemAddessState }));
-          refToastifyLoading.current?.success('Thành công', '/location');
+          refToastifyLoading.current?.success('Thành công', 'back');
         }, 1500);
       } else {
         refToastifyLoading.current?.fail('Tạo không thành công');
@@ -142,7 +142,7 @@ export function LocationScreen(props: LocationProps) {
         fetchListAddressConfig();
         setTimeout(() => {
           dispath(chooseItemAddress({ ...initItemAddessState }));
-          refToastifyLoading.current?.success('Thành công', '/location');
+          refToastifyLoading.current?.success('Thành công', 'back');
         }, 1500);
       } else {
         refToastifyLoading.current?.fail('Xóa không thành công');
@@ -163,7 +163,7 @@ export function LocationScreen(props: LocationProps) {
         fetchListAddressConfig();
         setTimeout(() => {
           dispath(chooseItemAddress({ ...initItemAddessState }));
-          refToastifyLoading.current?.success('Thành công', '/location');
+          refToastifyLoading.current?.success('Thành công', 'back');
         }, 1500);
       } else {
         refToastifyLoading.current?.fail('Sửa địa chỉ không thành công');

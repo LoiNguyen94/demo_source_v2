@@ -17,7 +17,7 @@ const ToastifyLoading: React.ForwardRefRenderFunction<
   ToastifyLoadingProps
 > = (props, ref) => {
   const toastId = useRef(null);
-  const { pushRaw } = useNavigation();
+  const { pushRaw, goBack } = useNavigation();
 
   useImperativeHandle(ref, () => ({
     show: (content: string) => {
@@ -33,7 +33,12 @@ const ToastifyLoading: React.ForwardRefRenderFunction<
         type: toast.TYPE.SUCCESS,
         isLoading: false,
         autoClose: 1000,
-        onClose: () => (route ? pushRaw(route) : console.log('done')),
+        onClose: () =>
+          route
+            ? route === 'back'
+              ? goBack()
+              : pushRaw(route)
+            : console.log('done'),
       });
     },
     fail: (content: string) => {
