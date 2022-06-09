@@ -42,11 +42,6 @@ function App({ Component, pageProps }: AppProps) {
     checkToken();
   }, [dispatch]);
 
-  useEffect(() => {
-    if (!loading && isWeb) {
-      route.replace('/home');
-    }
-  }, [loading]);
   return (
     <>
       <Head>

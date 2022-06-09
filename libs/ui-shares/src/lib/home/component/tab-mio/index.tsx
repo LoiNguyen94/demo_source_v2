@@ -4,14 +4,14 @@ import { isWeb } from '@monorepo/function-shares';
 import Banner from './banner';
 import Category from './category';
 import FlashSale from './flashsale';
-import { ReactNode } from 'react';
+import { ReactNode, memo } from 'react';
 export interface TabMioProps {
   id?: string;
   data?: any;
   list_category: ICategory[];
 }
 
-export function TabMio({ data, list_category }: TabMioProps) {
+export const TabMio = memo(({ data, list_category }: TabMioProps) => {
   const Layout = ({ children }: { children: ReactNode }) =>
     isWeb ? <>{children}</> : <TransitionLayout>{children}</TransitionLayout>;
 
@@ -31,6 +31,6 @@ export function TabMio({ data, list_category }: TabMioProps) {
       </div>
     </Layout>
   );
-}
+});
 
 export default TabMio;

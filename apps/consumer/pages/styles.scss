@@ -1,5 +1,7 @@
+@use './styles/variables.css';
+@use './styles/_variable_styles.scss';
+@use './custom_style.css';
 @import 'antd/dist/antd.css';
-@import './custom_style.css';
 @import 'react-toastify/dist/ReactToastify.css';
 @import '@ionic/react/css/core.css';
 @import '@ionic/react/css/padding.css';

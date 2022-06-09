@@ -1,4 +1,4 @@
-import { DownOutlined } from '@ant-design/icons';
+import { DownOutlined, CloseOutlined } from '@ant-design/icons';
 import { Input, Switch } from 'antd';
 import styles from './add.module.scss';
 import {
@@ -216,12 +216,22 @@ export function LocationScreen(props: LocationProps) {
             <Input
               name={item.name}
               value={address[item.name]}
-              // maxLength={item.id === 2 ? 10 : 1000}
               bordered={false}
               style={{ color: '#0F172A', padding: 0 }}
               placeholder={item.placeHolder}
               type={item.type}
               onChange={handleChangeInput}
+              allowClear={{
+                clearIcon: (
+                  <CloseOutlined
+                    style={{
+                      fontSize: 11,
+                      color: '#0F172A',
+                      cursor: 'pointer',
+                    }}
+                  />
+                ),
+              }}
               onWheel={(event) => event.currentTarget.blur()}
             />
           </div>

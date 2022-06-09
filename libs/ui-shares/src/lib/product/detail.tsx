@@ -49,7 +49,7 @@ export function Detail(props: DetailProps) {
   return (
     <div style={{ marginTop: 85, paddingBottom: 85 }}>
       <Image
-        // loader={imageLoader}
+        loader={imageLoader}
         alt="bg"
         src={detail?.photo}
         width={widthFixed}

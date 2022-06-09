@@ -51,15 +51,13 @@ export const TransitionLayout = memo(
       <div>
         <Head>
           <title>{title}</title>
-          <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-          <meta property="og:title" content={title} key="title" />
           <meta
-            property="og:description"
-            content={`Thành phần: Cá ngừ, nước, dầu hướng dương, muối, chiết xuất rau củ, mì chính, chất ổn định
-Bảo quản:  Để nơi khô ráo, thoáng mát, tránh ánh nắng trực tiếp. Nếu không dùng hết, giữ lạnh ở nhiệt độ 5 độ C tối đa 24 giờ`}
+            name="viewport"
+            content="target-densitydpi=device-dpi, initial-scale=1.0, user-scalable=no"
           />
+          <meta property="og:title" content={title} key="title" />
+          <meta property="og:description" content={description} />
           <meta property="og:image" content={photo} />
-          <meta name="robots" content="noindex" />
         </Head>
         <div style={{ height: height }} className={styles['container']}>
           <div

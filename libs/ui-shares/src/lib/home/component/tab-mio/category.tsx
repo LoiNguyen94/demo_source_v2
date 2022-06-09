@@ -46,7 +46,7 @@ export function Category(props: CategoryProps) {
         {data.map((item) => (
           <SwiperSlide key={item.id}>
             <Image
-              // loader={imageLoader}
+              loader={imageLoader}
               objectFit="cover"
               alt="bg"
               src={item.photo}

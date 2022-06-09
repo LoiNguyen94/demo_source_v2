@@ -93,7 +93,7 @@ export function ModalAddCart({
             }}
           >
             <Image
-              // loader={imageLoader}
+              loader={imageLoader}
               alt="bg"
               src={data?.photo}
               width={80}

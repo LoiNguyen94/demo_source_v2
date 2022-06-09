@@ -21,7 +21,7 @@ ImageDefaultProps) {
   return (
     <>
       <Image
-        // loader={imageLoader}
+        loader={imageLoader}
         // layout={"responsive"}
         alt="img"
         src={src}
@@ -45,7 +45,7 @@ ImageDefaultProps) {
   return (
     <>
       <Image
-        // loader={imageLoader}
+        loader={imageLoader}
         layout={"responsive"}
         alt="img"
         src={src}

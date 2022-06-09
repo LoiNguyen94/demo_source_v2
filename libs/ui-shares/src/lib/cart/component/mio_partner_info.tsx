@@ -22,7 +22,7 @@ export function CartMioPartner({ data }: CartMioPartnerProps) {
       </div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {/* <Image
-          // loader={imageLoader}
+          loader={imageLoader}
           objectFit="cover"
           alt="bg"
           src={PartnerDefault}

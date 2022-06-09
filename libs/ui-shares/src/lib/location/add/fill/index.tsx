@@ -114,32 +114,30 @@ export function FillNewAddressScreen(props: FillNewAddressProps) {
   return (
     <div style={{ marginTop: 85, paddingBottom: 125 }}>
       <div className={styles['container_item']}>Địa chỉ</div>
-      <div
-        className={`${styles['row_between_center']}`}
+
+      <Input
+        ref={input}
+        bordered={false}
         style={{
-          padding: '8px 16px 8px 16px',
-          backgroundColor: 'white',
-          marginBottom: 4,
+          color: '#0F172A',
+          backgroundColor: '#ffffff',
+          padding: '9px 16px 9px 16px',
         }}
-      >
-        <Input
-          ref={input}
-          bordered={false}
-          style={{ color: '#0F172A', padding: 0 }}
-          placeholder={'Số nhà, tên đường'}
-          onChange={handleChangeInput}
-          value={address['other']}
-        />
-        {address['other'] && (
-          <CloseOutlined
-            onClick={clearInput}
-            style={{ fontSize: 11, color: '#0F172A', cursor: 'pointer' }}
-          />
-        )}
-      </div>
+        allowClear={{
+          clearIcon: (
+            <CloseOutlined
+              style={{ fontSize: 11, color: '#0F172A', cursor: 'pointer' }}
+            />
+          ),
+        }}
+        placeholder={'Số nhà, tên đường'}
+        onChange={handleChangeInput}
+        value={address['other']}
+      />
+
       <div
         onClick={() => setVisible(true)}
-        style={{}}
+        style={{ marginTop: 4 }}
         className={`${styles['title_item']} ${styles['row_between_center']}`}
       >
         {address['city'] && address['ward'] && address['dist'] ? (

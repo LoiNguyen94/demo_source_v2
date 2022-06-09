@@ -37,12 +37,27 @@ export function HomeConsumer({
     ),
     ({ style }) => (
       <animated.div style={{ ...style }}>
-        <TabPartner />
+        <TabMio data={data} list_category={list_category} />
       </animated.div>
     ),
-    ({ style }) => <animated.div style={{ ...style }}>C</animated.div>,
-    ({ style }) => <animated.div style={{ ...style }}>d</animated.div>,
-    ({ style }) => <animated.div style={{ ...style }}>f</animated.div>,
+    ({ style }) => (
+      <animated.div style={{ ...style }}>
+        {' '}
+        <TabMio data={data} list_category={list_category} />
+      </animated.div>
+    ),
+    ({ style }) => (
+      <animated.div style={{ ...style }}>
+        {' '}
+        <TabMio data={data} list_category={list_category} />
+      </animated.div>
+    ),
+    ({ style }) => (
+      <animated.div style={{ ...style }}>
+        {' '}
+        <TabMio data={data} list_category={list_category} />
+      </animated.div>
+    ),
   ];
 
   const transitions = useTransition(position, {
