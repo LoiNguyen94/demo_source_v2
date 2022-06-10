@@ -8,6 +8,7 @@ export const isWeb = Capacitor.getPlatform() === 'web';
 type HistoryLocationState = ReturnType<typeof useHistory>;
 type NavigationType = NextRouter & HistoryLocationState;
 export enum SCREEN {
+  root='root',
   home = 'home',
   login = 'login',
   forget_password = 'forget-password',
@@ -17,6 +18,7 @@ export enum SCREEN {
   add_new_address = 'add-new-address',
 }
 const prefix = {
+  [SCREEN.root]: '/',
   [SCREEN.home]: '/home',
   [SCREEN.login]: '/login',
   [SCREEN.register]: '/register',
@@ -59,7 +61,7 @@ export const useNavigation = (): Props => {
   }, []);
 
   const replaceScreen = useCallback((url: keyof typeof prefix) => {
-    navigation.push(prefix[url] ?? '');
+    navigation.replace(prefix[url] ?? '');
   }, []);
 
   return {

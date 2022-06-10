@@ -17,8 +17,8 @@ const Tabs = () => {
     <IonTabs>
       <IonRouterOutlet>
         <Route path="/tabs/mio" component={TabMio} exact={true} />
-        {/* <Route path="/tabs/lists" component={Lists} exact={true} /> */}
-        {/* <Route path="/tabs/settings" component={Settings} exact={true} /> */}
+        <Route path="/tabs/lists" component={TabMio} exact={true} />
+        <Route path="/tabs/settings" component={TabMio} exact={true} />
         <Route
           path="/tabs"
           render={() => <Redirect to="/tabs/mio" />}

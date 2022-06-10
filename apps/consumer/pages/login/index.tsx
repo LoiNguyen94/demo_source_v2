@@ -15,6 +15,7 @@ import {
   fetchListAddressConfig,
   useNavigation,
   SCREEN,
+  isWeb,
 } from '@monorepo/function-shares';
 import styles from './login.module.scss';
 import { Storage } from '@capacitor/storage';
@@ -58,7 +59,7 @@ function LoginScreen(props: LoginProps) {
             });
             setDefaultToken(res.data.data.token);
             fetchListAddressConfig();
-            push(SCREEN.home);
+            push(isWeb ? SCREEN.home : SCREEN.root);
           },
           error: (res) => {
             refForm.current.setMessageError({
@@ -78,8 +79,8 @@ function LoginScreen(props: LoginProps) {
       });
   };
   const goToRegister = () => {
-    push(SCREEN.register)
-  }
+    push(SCREEN.register);
+  };
   return (
     <TransitionLayout
       title="Tất cả sản phẩm"
@@ -103,13 +104,15 @@ function LoginScreen(props: LoginProps) {
           </div>
           <LoginForm onSubmit={submit} ref={refForm} />
         </div>
-          <div className={styles['login-form-register']} onClick={goToRegister}>
-            Bạn chưa có tài khoản?
-            <div className={styles['btn-register']}>Đăng ký</div>
-          </div>
+        <div className={styles['login-form-register']} onClick={goToRegister}>
+          Bạn chưa có tài khoản?
+          <div className={styles['btn-register']}>Đăng ký</div>
+        </div>
         {isLoading ? <Loading /> : null}
       </div>
     </TransitionLayout>
   );
 }
-export default dynamic(() => Promise.resolve(withIonicPage(LoginScreen)), { ssr: false });
+export default dynamic(() => Promise.resolve(withIonicPage(LoginScreen)), {
+  ssr: false,
+});

@@ -22,7 +22,7 @@ const AppShell = () => {
   return (
     <IonApp>
       <IonReactRouter>
-        <IonRouterOutlet id="main">
+        <IonRouterOutlet mode='ios' id="main">
           {/* {isAuth ? <Route path="/" render={() => <Tabs />} /> :  <Route exact path="/" render={() => <Home/>} />} */}
           <Route path="/" render={() => <Tabs />} />
           <Route path="/tabs" render={() => <Tabs />} />
