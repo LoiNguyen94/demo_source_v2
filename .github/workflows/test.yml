@@ -1,5 +1,13 @@
 name: Consumer Web on Dev
 
+env:
+  # S3_BUCKET: mio-admin-static-website-dev
+  API_ENDPOINT: https://dev-api.itaphoa.com
+  # DISTRIBUTION: E33KCKRHW9UGRM
+  # TELEGRAM_TO: -563879366
+  # TELEGRAM_TOKEN: 1914674250:AAFGBB_ZRxaagWaCDiIhv6f_aqaBGKk8FL0
+  # BUILD_ENV: dev
+
 on: workflow_dispatch
 
 jobs:
@@ -21,6 +29,5 @@ jobs:
         run: |
           npm install -g yarn
           yarn install
-          # echo NEXT_PUBLIC_API_SERVER='"$API_ENDPOINT"' >> .env.local
-          # echo "NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID_DEV }}" >> .env.local
+          echo NEXT_PUBLIC_API_SERVER='"$NX_DOMAIN"' >> .env.local
           yarn consumer:build
