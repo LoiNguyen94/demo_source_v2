@@ -33,9 +33,9 @@ jobs:
           yarn consumer:build
       
       - name: Send tele message
-        uses: appleboy/telegram-action@master
         continue-on-error: true
-        if: ${{ job.status }} != 'success'
+        if: ${{ failure() }}
+          uses: appleboy/telegram-action@master
           with:
             to: ${{ env.TELEGRAM_TO }}
             token: ${{ env.TELEGRAM_TOKEN }}
@@ -43,7 +43,8 @@ jobs:
             message: |
              ========
               Lỗi rồi, ối dồi ôi
-        if: ${{ job.status }} == 'success'
+        if: ${{ success() }}
+          uses: appleboy/telegram-action@master
           with:
             to: ${{ env.TELEGRAM_TO }}
             token: ${{ env.TELEGRAM_TOKEN }}
