@@ -34,23 +34,19 @@ jobs:
       
       - name: Send tele message
         continue-on-error: true
-        if: ${{ failure() }}
-          uses: appleboy/telegram-action@master
+        uses: appleboy/telegram-action@master
           with:
             to: ${{ env.TELEGRAM_TO }}
             token: ${{ env.TELEGRAM_TOKEN }}
             format: markdown
-            message: |
-             ========
-              Lỗi rồi, ối dồi ôi
-        if: ${{ success() }}
-          uses: appleboy/telegram-action@master
-          with:
-            to: ${{ env.TELEGRAM_TO }}
-            token: ${{ env.TELEGRAM_TOKEN }}
-            format: markdown
-            message: |
+            if: ${{ failure() }}
+              message: |
+                ========
+                  Lỗi rồi, ối dồi ôi
+            if: ${{ success() }}      
+               message: |
               ========
               env dev -- test from Loi
               🚀 **${{ github.actor }}** - ${{ github.workflow }} => **${{ job.status }}**
               Branch: ${{github.ref}} SHA: ${{ env.SHORT_SHA }} ENV: ${{env.BUILD_ENV}}
+      
