@@ -33,7 +33,6 @@ jobs:
           yarn consumer:build
       
       - name: Send tele message
-        continue-on-error: true
         uses: appleboy/telegram-action@master
           with:
             to: ${{ env.TELEGRAM_TO }}
