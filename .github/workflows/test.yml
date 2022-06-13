@@ -51,7 +51,7 @@ jobs:
           to: ${{ env.TELEGRAM_TO }}
           token: ${{ env.TELEGRAM_TOKEN }}
           format: markdown
-          if: ${{ job.status }} != 'success'
+          if: ${{ job.status }} != success
           message: |
             ========
             Lỗi rồi, ối dồi ôi
