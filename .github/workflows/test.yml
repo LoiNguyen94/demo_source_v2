@@ -23,4 +23,4 @@ jobs:
           yarn install
           # echo NEXT_PUBLIC_API_SERVER='"$API_ENDPOINT"' >> .env.local
           # echo "NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID_DEV }}" >> .env.local
-          yarn export
+          yarn consumer:build
