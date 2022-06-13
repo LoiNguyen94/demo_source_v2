@@ -39,11 +39,11 @@ jobs:
           to: ${{ env.TELEGRAM_TO }}
           token: ${{ env.TELEGRAM_TOKEN }}
           format: markdown
-          if: ${{ failure() }}
+          if: ${{ job.status }} != 'success'
           message: |
             ========
             Lỗi rồi, ối dồi ôi
-          if: ${{ success() }}      
+          if: ${{ job.status }} == 'success'      
           message: |
             ========
             env dev -- test from Loi
