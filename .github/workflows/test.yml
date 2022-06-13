@@ -35,7 +35,7 @@ jobs:
       - name: Send tele message
         uses: appleboy/telegram-action@master
         continue-on-error: true
-        if: job.status != 'success'
+        if: ${{ job.status }} != 'success'
           with:
             to: ${{ env.TELEGRAM_TO }}
             token: ${{ env.TELEGRAM_TOKEN }}
@@ -43,7 +43,7 @@ jobs:
             message: |
              ========
               Lỗi rồi, ối dồi ôi
-        if: job.status == 'success'
+        if: ${{ job.status }} == 'success'
           with:
             to: ${{ env.TELEGRAM_TO }}
             token: ${{ env.TELEGRAM_TOKEN }}
