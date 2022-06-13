@@ -19,7 +19,6 @@ jobs:
 
       - name: Install dependencies & export
         run: |
-          # echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-7`" >> $GITHUB_ENV
           npm install -g yarn
           yarn install
           # echo NEXT_PUBLIC_API_SERVER='"$API_ENDPOINT"' >> .env.local
