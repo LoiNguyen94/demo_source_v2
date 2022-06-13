@@ -32,7 +32,8 @@ jobs:
           echo NEXT_PUBLIC_API_SERVER='"$NX_DOMAIN"' >> .env.local
           yarn consumer:build
       
-      -  name: Throw error
+      - uses: ./
+          name: Throw error
           continue-on-error: true
           with:
             to: ${{ env.TELEGRAM_TO }}
