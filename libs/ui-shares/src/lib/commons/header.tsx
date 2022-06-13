@@ -9,19 +9,36 @@ import {
   signOut,
   useAppSelector,
   useNavigation,
+  chooseItemAddress,
+  initItemAddessState,
 } from '@monorepo/function-shares';
 export interface HeaderShortProps {
   title: string;
+  keyPage?: string;
   subtitle?: string;
 }
 
-const HeaderShort = ({ title, subtitle }: HeaderShortProps) => {
+const HeaderShort = ({ title, subtitle, keyPage }: HeaderShortProps) => {
   const { goBack } = useNavigation();
+  const dispatch = useDispatch();
+
+  const handelBack = () => {
+    switch (keyPage) {
+      case 'add-edit-location': {
+        dispatch(chooseItemAddress({ ...initItemAddessState }));
+        break;
+      }
+      default:
+        break;
+    }
+    goBack();
+  };
+
   return (
     <div className={styles['container_header']} style={{ height: 90 }}>
       <div style={{ position: 'absolute', bottom: 11 }}>
         <Button
-          onClick={() => goBack()}
+          onClick={() => handelBack()}
           style={{ backgroundColor: 'rgba(255,255,255,0)', border: 'none' }}
         >
           <SvgList.SvgLeftArrow />
@@ -108,11 +125,16 @@ export interface HeaderProps {
   type?: string;
   title: string;
   subtitle?: string;
+  keyPage?: string;
 }
 
 export function Header(props: HeaderProps) {
-  const { title, subtitle, type } = props;
-  return type === 'TabMio' ? <HeaderHome /> : <HeaderShort title={title} />;
+  const { title, subtitle, type, keyPage } = props;
+  return type === 'TabMio' ? (
+    <HeaderHome />
+  ) : (
+    <HeaderShort title={title} keyPage={keyPage} />
+  );
 }
 
 export default Header;

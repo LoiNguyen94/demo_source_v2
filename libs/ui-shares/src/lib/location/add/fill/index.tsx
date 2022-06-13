@@ -159,13 +159,14 @@ export function FillNewAddressScreen(props: FillNewAddressProps) {
         </span>
       </div>
 
-      {address['lat'] && address['lng'] && (
+      {address['lat'] && address['lng'] ? (
         <>
           <div className={styles['container_item']}>Vị trí trên bản đồ</div>
           <PageMap
+            active={true}
             defaultMarker={{
-              latitude: address['lat'],
-              longitude: address['lng'],
+              latitude: parseFloat(address['lat']),
+              longitude: parseFloat(address['lng']),
             }}
             onLocationChange={onLocationChange}
           />
@@ -188,7 +189,7 @@ export function FillNewAddressScreen(props: FillNewAddressProps) {
             />
           </div>
         </>
-      )}
+      ) : null}
 
       {visible && <ModalFillAddress handle={() => setVisible(false)} />}
       {/* @ts-ignored */}

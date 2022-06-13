@@ -21,14 +21,11 @@ import {
   deletetAddressDeliveryApi,
   fetchListAddressConfig,
   initItemAddessState,
+  makeDataCreateAddress,
+  makeDataCallBackAddress,
 } from '@monorepo/function-shares';
 import FilledAddress from '../component/add/filled_address';
 import { useState, useRef, useEffect } from 'react';
-import {
-  makeDataCreateAddress,
-  makeDataCallBackAddress,
-} from './../component/add/helper';
-
 export interface LocationProps {
   id?: string;
   type?: string;
@@ -38,7 +35,7 @@ export function LocationScreen(props: LocationProps) {
   const { id, type } = props;
   const address = useSelector((state: any) => state['ItemAddress']);
   const listAddress = useSelector((state: any) => state['address']);
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
   const refToastifyLoading = useRef<TypeToastifyLoading>();
   const [visibleSecsionDelivery, setVisibleSecsionDelivery] = useState(false);
   const [visibleWarningDefault, setVisibleWarningDefault] = useState(false);
@@ -55,17 +52,16 @@ export function LocationScreen(props: LocationProps) {
     if (type === 'edit') {
       if (
         !listAddress ||
-        Object.values(address).every((i) => i !== '' && i !== NaN)
+        Object.values(address).every((i) => i && i !== '' && i !== NaN)
       )
         return;
       const callBackAddress = listAddress.filter(
-        (data: any) => data?.id === id
+        (data: any) => data?.id.toString() === id
       );
       const callBackData = makeDataCallBackAddress(callBackAddress[0]);
-      console.log(callBackData);
-      dispath(chooseItemAddress({ ...callBackData }));
+      dispatch(chooseItemAddress({ ...callBackData }));
     }
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (
@@ -113,13 +109,15 @@ export function LocationScreen(props: LocationProps) {
       if (res?.data?.status.code === 200) {
         fetchListAddressConfig();
         setTimeout(() => {
-          dispath(chooseItemAddress({ ...initItemAddessState }));
+          dispatch(chooseItemAddress({ ...initItemAddessState }));
           refToastifyLoading.current?.success('Thành công', 'back');
         }, 1500);
       } else {
         refToastifyLoading.current?.fail('Tạo không thành công');
       }
-    } catch (err) {}
+    } catch (err) {
+      refToastifyLoading.current?.fail('Tạo không thành công');
+    }
   };
 
   const requestDeleteAddress = async () => {
@@ -141,13 +139,15 @@ export function LocationScreen(props: LocationProps) {
       if (res?.data?.status.code === 200) {
         fetchListAddressConfig();
         setTimeout(() => {
-          dispath(chooseItemAddress({ ...initItemAddessState }));
+          dispatch(chooseItemAddress({ ...initItemAddessState }));
           refToastifyLoading.current?.success('Thành công', 'back');
         }, 1500);
       } else {
         refToastifyLoading.current?.fail('Xóa không thành công');
       }
-    } catch (err) {}
+    } catch (err) {
+      refToastifyLoading.current?.fail('Xóa không thành công');
+    }
   };
 
   const updateAddress = async () => {
@@ -162,38 +162,40 @@ export function LocationScreen(props: LocationProps) {
       if (res?.data?.status.code === 200) {
         fetchListAddressConfig();
         setTimeout(() => {
-          dispath(chooseItemAddress({ ...initItemAddessState }));
+          dispatch(chooseItemAddress({ ...initItemAddessState }));
           refToastifyLoading.current?.success('Thành công', 'back');
         }, 1500);
       } else {
         refToastifyLoading.current?.fail('Sửa địa chỉ không thành công');
       }
-    } catch (err) {}
+    } catch (err) {
+      refToastifyLoading.current?.fail('Sửa địa chỉ không thành công');
+    }
   };
 
   const handleChangeInput = (e: any) => {
     const { name, value } = e.target;
     switch (name) {
       case 'name':
-        dispath(chooseItemAddress({ ...address, name: value }));
+        dispatch(chooseItemAddress({ ...address, name: value }));
         setError({
           ...error,
           nameInfo: _validLenghtName(value, 3),
         });
         break;
       case 'phone':
-        dispath(chooseItemAddress({ ...address, phone: value }));
+        dispatch(chooseItemAddress({ ...address, phone: value }));
         setError({ ...error, phoneInfo: _validPhone(value) });
         break;
     }
   };
 
   const chooseTypeAddress = (item: any) => {
-    dispath(chooseItemAddress({ ...address, typeAddress: item }));
+    dispatch(chooseItemAddress({ ...address, typeAddress: item }));
   };
 
   const handleSwitchDefault = (e: any) => {
-    dispath(chooseItemAddress({ ...address, default: e }));
+    dispatch(chooseItemAddress({ ...address, default: e }));
   };
 
   return (

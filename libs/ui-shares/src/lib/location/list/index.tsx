@@ -11,10 +11,10 @@ export interface LocationListProps {
 export function LocationListScreen(props: LocationListProps) {
   const { push } = useNavigation();
   const addressList = useSelector((state: any) => state['address']);
+
   const [defaultAdd, setDefaultAdd] = useState();
 
   useEffect(() => {
-    console.log(addressList);
     if (!addressList || Object.keys(addressList).length === 0) return;
     const defaultAddress = addressList.filter(
       (item: any) => item?.is_default === true

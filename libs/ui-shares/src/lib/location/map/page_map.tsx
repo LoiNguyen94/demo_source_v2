@@ -23,6 +23,7 @@ export type LocationType = {
 interface Props {
   defaultMarker?: LocationType;
   height?: string;
+  active?: boolean;
   onLocationChange?: ({ latitude, longitude }: LocationType) => void;
 }
 
@@ -30,6 +31,7 @@ const positionOptions = { enableHighAccuracy: true };
 export const PageMap = (props: Props) => {
   const {
     onLocationChange,
+    active = false,
     defaultMarker = { latitude: 10.77608, longitude: 106.659984 },
     height = '400px',
   } = props;
@@ -55,6 +57,7 @@ export const PageMap = (props: Props) => {
   };
 
   const onMarkerDragEnd = (event: CallbackEvent) => {
+    if (!active) return;
     setMarker({
       longitude: event.lngLat[0],
       latitude: event.lngLat[1],

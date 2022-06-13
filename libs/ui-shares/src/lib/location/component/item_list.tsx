@@ -47,7 +47,7 @@ export function LocationItem({ type, id, data }: LocationItemProps) {
               <a>
                 <div
                   onClick={() => {
-                    pushRaw(`/location/edit/${data?.id}`);
+                    pushRaw(`/location/edit?id=${data?.id}`);
                   }}
                   style={{
                     fontSize: 14,

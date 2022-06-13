@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, Rate, Row, Col, Button } from 'antd';
+import { Card, Row, Col, Button } from 'antd';
 import Image from 'next/image';
 import styles from './product.module.scss';
 
@@ -32,7 +32,7 @@ export interface DetailProps {
 export function Detail(props: DetailProps) {
   const { errors, detail } = props;
   const fakeData = ['Bao ăn', '1 đổi 1'];
-  const [countStar, setCountStar] = useState(1);
+  // const [countStar, setCountStar] = useState(1);
   const [visibleModalProductInfo, setVisibleModalProductInfo] = useState(false);
   const [visibleModalAddCart, setVisibleModalAddCart] = useState(false);
   const { widthFixed } = useWindowSize();

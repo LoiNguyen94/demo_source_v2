@@ -32,13 +32,15 @@ export function FilledAddress(props: FilledAddressProps) {
             ', ' +
             data['city']?.name}
         </div>
-        <PageMap
-          defaultMarker={{
-            latitude: data['lat'],
-            longitude: data['lng'],
-          }}
-          height="120px"
-        />
+        {data['lat'] && data['lng'] ? (
+          <PageMap
+            defaultMarker={{
+              latitude: parseFloat(data['lat']),
+              longitude: parseFloat(data['lng']),
+            }}
+            height="120px"
+          />
+        ) : null}
       </div>
       <ErrorOneLine
         content={data['confirmLocation'] ? '' : 'Địa chỉ chưa được xác nhận'}

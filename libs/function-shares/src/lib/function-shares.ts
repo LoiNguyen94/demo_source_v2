@@ -16,3 +16,20 @@ export const formatMoneyVND = (num: number) => {
       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') + ' ₫'
   );
 };
+
+export const getParams = () => {
+  const isClient = typeof window === 'object';
+
+  if (!isClient) {
+    return;
+  }
+
+  let search = window.location.search;
+  let arr = search.split('?');
+  let params = new URLSearchParams(arr[1]);
+  // let value_params = params.get(`${key}`);
+  if (params) {
+    return params;
+  }
+  return null;
+};

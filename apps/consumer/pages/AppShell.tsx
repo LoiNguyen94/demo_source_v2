@@ -47,7 +47,7 @@ const AppShell = () => {
             component={fillAddress}
             exact={true}
           />
-          <Route path="/location/edit/:addressId" component={editLocation} />
+          <Route path="/location/edit" component={editLocation} />
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>
