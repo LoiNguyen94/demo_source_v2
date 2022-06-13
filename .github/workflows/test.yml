@@ -1,22 +1,27 @@
 name: Consumer Web on Dev
-on:
-  push:
-    branches:
-      - develop
-  pull_request:
+
+on: workflow_dispatch
 
 jobs:
-  main:
+  build:
+    name: Deploy consumer web on dev
     runs-on: ubuntu-latest
+    environment: development
+    strategy:
+      matrix:
+        node-version: [14.x]
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
-          fetch-depth: 0
-      - uses: nrwl/nx-set-shas@v2
-      - run: npm ci
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
-      - run: npx nx workspace-lint
-      - run: npx nx format:check
-      - run: npx nx affected --target=lint --parallel=3
-      - run: npx nx affected --target=test --parallel=3 --ci --code-coverage
-      - run: npx nx affected --target=build --parallel=3
+      - name: Install dependencies & export
+        run: |
+          echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-7`" >> $GITHUB_ENV
+          npm install -g yarn
+          yarn install
+          echo NEXT_PUBLIC_API_SERVER='"$API_ENDPOINT"' >> .env.local
+          echo "NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID_DEV }}" >> .env.local
+          yarn export
