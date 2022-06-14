@@ -24,11 +24,7 @@ function Products(props: ProductProps) {
 }
 
 export async function getStaticProps(context) {
-  // Fetch data from external API
-  //   const res = await fetch(`https://dev-api.itaphoa.com/customer/products`);
-  //   const data = await res.json();
   const data = [];
-  // Pass data to the page via props
   return { props: { data } };
 }
 
