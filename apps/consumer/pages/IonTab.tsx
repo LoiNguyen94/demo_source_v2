@@ -6,40 +6,59 @@ import {
   IonTabButton,
   IonIcon,
   IonLabel,
+  IonPage,
 } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
-import { cog, flash, list } from 'ionicons/icons';
+import { newspaper, list, home, person } from 'ionicons/icons';
+import Home from '../pages/home';
+import IonHome from './home/IonHome';
+import DetailProduct from './products/details/IonDetail';
+import location from './location';
+import { useAppSelector } from '@monorepo/function-shares';
 
-import { TabMio } from '@monorepo/ui-shares';
-
+const Order = () => <IonPage><div>tab đơn hàng</div></IonPage>
+const Account = () => <IonPage><div>tab tài khoản</div></IonPage>
 const Tabs = () => {
+  const token = useAppSelector((state) => state.auth.token);
+  const isAuth = token !== undefined;
   return (
     <IonTabs>
-      <IonRouterOutlet>
-        <Route path="/tabs/mio" component={TabMio} exact={true} />
-        <Route path="/tabs/lists" component={TabMio} exact={true} />
-        <Route path="/tabs/settings" component={TabMio} exact={true} />
+      <IonRouterOutlet mode="ios">
+        <Route path="/tabs/home" component={IonHome} exact={true} />
+        <Route path="/tabs/order" component={Order} exact={true} />
+        <Route path="/tabs/account" component={Account} exact={true} />
         <Route
           path="/tabs"
-          render={() => <Redirect to="/tabs/mio" />}
+          render={() => <Redirect to="/tabs/home" />}
           exact={true}
         />
       </IonRouterOutlet>
-      <IonTabBar slot="bottom">
+      <IonTabBar slot="bottom" hidden={!isAuth}>
         {/* @ts-ignore */}
-        <IonTabButton tab="tab1" href="/tabs/mio">
-          <IonIcon icon={flash} />
+        <IonTabButton
+          tab="tab1"
+          href="/tabs/home"
+          style={{ '--color-selected': '#ef224e' }}
+        >
+          <IonIcon icon={home} />
           <IonLabel>Mio</IonLabel>
         </IonTabButton>
         {/* @ts-ignore */}
-        <IonTabButton tab="tab2" href="/tabs/lists">
-          <IonIcon icon={list} />
-          <IonLabel>Lists</IonLabel>
+        <IonTabButton
+          tab="tab2"
+          href="/tabs/order"
+          style={{ '--color-selected': '#ef224e' }}
+        >
+          <IonIcon icon={newspaper} />
+          <IonLabel>Đơn hàng</IonLabel>
         </IonTabButton>
         {/* @ts-ignore */}
-        <IonTabButton tab="tab3" href="/tabs/settings">
-          <IonIcon icon={cog} />
-          <IonLabel>Settings</IonLabel>
+        <IonTabButton
+          tab="tab3"
+          href="/tabs/account"
+          style={{ '--color-selected': '#ef224e' }}
+        >
+          <IonIcon icon={person} />
+          <IonLabel>Tài khoản</IonLabel>
         </IonTabButton>
       </IonTabBar>
     </IonTabs>

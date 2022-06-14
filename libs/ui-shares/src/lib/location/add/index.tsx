@@ -108,15 +108,17 @@ export function LocationScreen(props: LocationProps) {
       const res = await createAddressDeliveryApi(addressParam);
       if (res?.data?.status.code === 200) {
         fetchListAddressConfig();
-        setTimeout(() => {
-          dispatch(chooseItemAddress({ ...initItemAddessState }));
-          refToastifyLoading.current?.success('Thành công', 'back');
-        }, 1500);
+        dispatch(chooseItemAddress({ ...initItemAddessState }));
+        refToastifyLoading.current?.success('Thành công', 'back');
       } else {
         refToastifyLoading.current?.fail('Tạo không thành công');
+        setProcessing(false);
       }
     } catch (err) {
-      refToastifyLoading.current?.fail('Tạo không thành công');
+      refToastifyLoading.current?.fail(
+        err?.response?.data?.message ?? 'Tạo không thành công'
+      );
+      setProcessing(false);
     }
   };
 
@@ -138,15 +140,17 @@ export function LocationScreen(props: LocationProps) {
       const res = await deletetAddressDeliveryApi(id + '');
       if (res?.data?.status.code === 200) {
         fetchListAddressConfig();
-        setTimeout(() => {
-          dispatch(chooseItemAddress({ ...initItemAddessState }));
-          refToastifyLoading.current?.success('Thành công', 'back');
-        }, 1500);
+        dispatch(chooseItemAddress({ ...initItemAddessState }));
+        refToastifyLoading.current?.success('Thành công', 'back');
       } else {
         refToastifyLoading.current?.fail('Xóa không thành công');
+        setProcessing(false);
       }
     } catch (err) {
-      refToastifyLoading.current?.fail('Xóa không thành công');
+      refToastifyLoading.current?.fail(
+        err?.response?.data?.message ?? 'Xóa không thành công'
+      );
+      setProcessing(false);
     }
   };
 
@@ -161,15 +165,17 @@ export function LocationScreen(props: LocationProps) {
       console.log(res);
       if (res?.data?.status.code === 200) {
         fetchListAddressConfig();
-        setTimeout(() => {
-          dispatch(chooseItemAddress({ ...initItemAddessState }));
-          refToastifyLoading.current?.success('Thành công', 'back');
-        }, 1500);
+        dispatch(chooseItemAddress({ ...initItemAddessState }));
+        refToastifyLoading.current?.success('Thành công', 'back');
       } else {
         refToastifyLoading.current?.fail('Sửa địa chỉ không thành công');
+        setProcessing(false);
       }
     } catch (err) {
-      refToastifyLoading.current?.fail('Sửa địa chỉ không thành công');
+      refToastifyLoading.current?.fail(
+        err?.response?.data?.message ?? 'Sửa địa chỉ không thành công'
+      );
+      setProcessing(false);
     }
   };
 

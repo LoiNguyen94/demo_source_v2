@@ -1,8 +1,7 @@
 import { Capacitor } from '@capacitor/core';
 import { NextRouter, useRouter } from 'next/router';
-import { env } from 'process';
 import { useCallback, useMemo } from 'react';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 
 export const isWeb = Capacitor.getPlatform() === 'web';
 type HistoryLocationState = ReturnType<typeof useHistory>;
@@ -16,6 +15,7 @@ export enum SCREEN {
   location = 'location',
   fill_address = 'fill-address',
   add_new_address = 'add-new-address',
+  detail_product = 'detail_product'
 }
 const prefix = {
   [SCREEN.root]: '/',
@@ -26,6 +26,7 @@ const prefix = {
   [SCREEN.location]: '/location',
   [SCREEN.add_new_address]: '/location/add',
   [SCREEN.fill_address]: '/location/add/fill',
+  [SCREEN.detail_product]: '/products/details',
 };
 
 type Props = {
@@ -34,6 +35,7 @@ type Props = {
   push: (url: keyof typeof prefix) => void;
   pushRaw: (url: string) => void;
   replaceScreen: (url: keyof typeof prefix) => void;
+  pushScreenParam: (url: keyof typeof prefix, data?: any) => void
 };
 export const useNavigation = (): Props => {
   const history = useHistory();
@@ -51,12 +53,23 @@ export const useNavigation = (): Props => {
   }, []);
 
   const pushScreen = useCallback((url: keyof typeof prefix) => {
-    console.log('isWeb: ' + isWeb);
-    navigation.push(prefix[url] ?? '');
+    if (isWeb) {
+      navigation.push(prefix[url]);
+    } else {
+      navigation.push(prefix[url] ?? '');
+    }
   }, []);
-
+  const pushScreenParam = useCallback(
+    (url: keyof typeof prefix, data: any) => {
+      if (isWeb) {
+        navigation.push(`${prefix[url]}/${data}` ?? '');
+      } else {
+        history.push(`${prefix[url]}/${data}`)
+      }
+    },
+    []
+  );
   const pushScreenWithRawLink = useCallback((url: string) => {
-    console.log('isWeb: ' + isWeb);
     navigation.push(url ?? '');
   }, []);
 
@@ -70,5 +83,6 @@ export const useNavigation = (): Props => {
     replaceScreen: (url: keyof typeof prefix) => replaceScreen(url),
     pushRaw: (url: string) => pushScreenWithRawLink(url),
     push: (url: keyof typeof prefix) => pushScreen(url),
+    pushScreenParam: (url: keyof typeof prefix, data?: any) => pushScreenParam(url, data),
   };
 };

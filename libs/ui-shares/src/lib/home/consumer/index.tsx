@@ -16,6 +16,39 @@ interface HomeConsumerProps {
   list_category: ICategory[];
 }
 
+const pages: ((
+  props: AnimatedProps<{ style: CSSProperties; data: any; list_category: any }>
+) => React.ReactElement)[] = [
+  ({ style, data, list_category }) => (
+    <animated.div style={{ ...style }}>
+      <TabMio data={data} list_category={list_category} />
+    </animated.div>
+  ),
+  ({ style, data, list_category }) => (
+    <animated.div style={{ ...style }}>
+      <TabMio data={data} list_category={list_category} />
+    </animated.div>
+  ),
+  ({ style, data, list_category }) => (
+    <animated.div style={{ ...style }}>
+      {' '}
+      <TabMio data={data} list_category={list_category} />
+    </animated.div>
+  ),
+  ({ style, data, list_category }) => (
+    <animated.div style={{ ...style }}>
+      {' '}
+      <TabMio data={data} list_category={list_category} />
+    </animated.div>
+  ),
+  ({ style, data, list_category }) => (
+    <animated.div style={{ ...style }}>
+      {' '}
+      <TabMio data={data} list_category={list_category} />
+    </animated.div>
+  ),
+];
+
 export function HomeConsumer({
   position = 0,
   data,
@@ -26,39 +59,6 @@ export function HomeConsumer({
   useEffect(() => {
     transRef.start();
   }, [position]);
-
-  const pages: ((
-    props: AnimatedProps<{ style: CSSProperties }>
-  ) => React.ReactElement)[] = [
-    ({ style }) => (
-      <animated.div style={{ ...style }}>
-        <TabMio data={data} list_category={list_category} />
-      </animated.div>
-    ),
-    ({ style }) => (
-      <animated.div style={{ ...style }}>
-        <TabMio data={data} list_category={list_category} />
-      </animated.div>
-    ),
-    ({ style }) => (
-      <animated.div style={{ ...style }}>
-        {' '}
-        <TabMio data={data} list_category={list_category} />
-      </animated.div>
-    ),
-    ({ style }) => (
-      <animated.div style={{ ...style }}>
-        {' '}
-        <TabMio data={data} list_category={list_category} />
-      </animated.div>
-    ),
-    ({ style }) => (
-      <animated.div style={{ ...style }}>
-        {' '}
-        <TabMio data={data} list_category={list_category} />
-      </animated.div>
-    ),
-  ];
 
   const transitions = useTransition(position, {
     ref: transRef,
@@ -82,7 +82,7 @@ export function HomeConsumer({
 
       {transitions((style, i) => {
         const Page = pages[i];
-        return <Page style={style} />;
+        return <Page style={style} data={data} list_category={list_category} />;
       })}
     </TransitionLayout>
   );

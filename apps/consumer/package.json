@@ -11,6 +11,7 @@
     "@capacitor/haptics": "*",
     "@capacitor/network": "*",
     "@capacitor/push-notifications": "*",
-    "@capacitor/storage": "*"
+    "@capacitor/storage": "*",
+    "@capacitor/app": "*"
   }
 }

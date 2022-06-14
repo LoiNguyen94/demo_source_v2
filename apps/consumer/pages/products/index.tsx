@@ -1,5 +1,10 @@
 import { TransitionLayout, Header } from '@monorepo/ui-shares';
-import { getListProduct, imageLoader } from '@monorepo/function-shares';
+import {
+  getListProduct,
+  imageLoader,
+  SCREEN,
+  useNavigation,
+} from '@monorepo/function-shares';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Row, Col, Card } from 'antd';
@@ -14,6 +19,7 @@ export interface ProductProps {
 
 function Products(props: ProductProps) {
   const { data } = props;
+  const { pushScreenParam } = useNavigation();
   return (
     <div>
       <TransitionLayout
@@ -38,7 +44,12 @@ function Products(props: ProductProps) {
                         key={item.id}
                         span={12}
                       >
-                        <Link href={`/products/details/${item?.id}`}>
+                        <div
+                          onClick={() =>{
+                            console.log("navigate")
+                            // pushScreenParam(SCREEN.detail_product, item?.id)
+                          }}
+                        >
                           <a>
                             <Card
                               hoverable
@@ -64,7 +75,7 @@ function Products(props: ProductProps) {
                               />
                             </Card>
                           </a>
-                        </Link>
+                        </div>
                       </Col>
                     )
                 )}

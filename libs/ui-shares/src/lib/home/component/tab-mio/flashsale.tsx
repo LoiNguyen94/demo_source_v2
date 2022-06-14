@@ -4,6 +4,8 @@ import {
   imageLoader,
   formatMoneyVND,
   getPriceInList,
+  useNavigation,
+  SCREEN,
 } from '@monorepo/function-shares';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -16,6 +18,7 @@ export interface FlashSaleProps {
 const { Meta } = Card;
 
 export function FlashSale({ id, data }: FlashSaleProps) {
+  const { pushScreenParam,pushRaw } = useNavigation();
   return (
     <div
       className={`${styles['p_10_13_10_13']} flash_sale_page`}
@@ -66,7 +69,11 @@ export function FlashSale({ id, data }: FlashSaleProps) {
                   item.photo &&
                   index < 30 && (
                     <Col style={{}} key={item.id} span={12}>
-                      <Link href={`/products/details/${item?.id}`}>
+                      <div
+                        onClick={() =>
+                          pushScreenParam(SCREEN.detail_product, item?.id)
+                        }
+                      >
                         <a style={{ width: '100%' }}>
                           <Card
                             className={styles['p_0']}
@@ -128,7 +135,7 @@ export function FlashSale({ id, data }: FlashSaleProps) {
                             </div>
                           </Card>
                         </a>
-                      </Link>
+                      </div>
                       <div
                         style={{
                           position: 'absolute',

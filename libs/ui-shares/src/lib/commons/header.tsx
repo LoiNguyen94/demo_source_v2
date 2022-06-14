@@ -54,7 +54,7 @@ export interface HeaderHomeProps {
 }
 
 const HeaderHome = ({ subtitle }: HeaderHomeProps) => {
-  const { push } = useNavigation();
+  const { push, replaceScreen } = useNavigation();
   const dispatch = useDispatch();
   const addressList = useSelector((state: any) => state['address']);
   const token = useAppSelector((state) => state.auth?.token);
@@ -98,13 +98,16 @@ const HeaderHome = ({ subtitle }: HeaderHomeProps) => {
           <div
             className={'click_effect'}
             style={{ marginRight: 20 }}
-            onClick={() => dispatch(signOut(''))}
+            onClick={() => { 
+                dispatch(signOut(''))
+                replaceScreen(SCREEN.root)
+              }}
           >
             <Badge size="default" count={0}>
               <SvgList.SvgBell />
             </Badge>
           </div>
-          <div className={'click_effect'}>
+          <div className={'click_effect'} onClick={() => push(SCREEN.login)}>
             <Badge size="default" count={10}>
               <SvgList.SvgCart />
             </Badge>

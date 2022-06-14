@@ -1,6 +1,6 @@
 import { ICategory } from '@monorepo/model';
-import { TransitionLayout, Header } from '@monorepo/ui-shares';
-import { isWeb } from '@monorepo/function-shares';
+import { TransitionLayout, Header, Buttons } from '@monorepo/ui-shares';
+import { isWeb, SCREEN, useNavigation } from '@monorepo/function-shares';
 import Banner from './banner';
 import Category from './category';
 import FlashSale from './flashsale';
@@ -10,11 +10,10 @@ export interface TabMioProps {
   data?: any;
   list_category: ICategory[];
 }
-
-export const TabMio = memo(({ data, list_category }: TabMioProps) => {
-  const Layout = ({ children }: { children: ReactNode }) =>
-    isWeb ? <>{children}</> : <TransitionLayout>{children}</TransitionLayout>;
-
+const Layout = ({ children }: { children: ReactNode }) =>
+isWeb ? <>{children}</> : <TransitionLayout>{children}</TransitionLayout>;
+export function TabMio({ data, list_category }: TabMioProps) {
+  const { push } = useNavigation();
   return (
     <Layout>
       <Header title="" type="TabMio" />
@@ -31,6 +30,6 @@ export const TabMio = memo(({ data, list_category }: TabMioProps) => {
       </div>
     </Layout>
   );
-});
+}
 
 export default TabMio;
