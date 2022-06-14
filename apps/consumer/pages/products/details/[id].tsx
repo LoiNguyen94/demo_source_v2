@@ -1,4 +1,3 @@
-
 import {
   getProductDetail,
   getListProduct,
@@ -8,21 +7,34 @@ import dynamic from 'next/dynamic';
 import Detail from './IonDetail';
 export default dynamic(() => Promise.resolve(Detail), { ssr: true });
 
-export const getStaticPaths = async () => {
-  // const res = await fetch(`https://dev-api.itaphoa.com/customer/products`);
-  // const data = await res.json();
+// export const getStaticPaths = async () => {
+//   // const res = await fetch(`https://dev-api.itaphoa.com/customer/products`);
+//   // const data = await res.json();
 
-  const data = await getListProduct();
-  const paths = data.map((item) => ({
-    params: { id: item.id.toString() },
-  }));
+//   const data = await getListProduct();
+//   const paths = data.map((item) => ({
+//     params: { id: item.id.toString() },
+//   }));
 
-  return { paths, fallback: true };
-};
+//   return { paths, fallback: true };
+// };
 
-export const getStaticProps = async ({ params }) => {
+// export const getStaticProps = async ({ params }) => {
+//   try {
+//     const id = params?.id;
+//     // const res = await fetch(
+//     //   `https://dev-api.itaphoa.com/customer/products/${id}`
+//     // );
+//     const detail = await getProductDetail(id);
+//     return { props: { detail } };
+//   } catch (err: any) {
+//     return { props: { errors: err.message } };
+//   }
+// };
+
+export async function getServerSideProps(context) {
   try {
-    const id = params?.id;
+    const id = context?.params?.id;
     // const res = await fetch(
     //   `https://dev-api.itaphoa.com/customer/products/${id}`
     // );
@@ -31,4 +43,4 @@ export const getStaticProps = async ({ params }) => {
   } catch (err: any) {
     return { props: { errors: err.message } };
   }
-};
+}
