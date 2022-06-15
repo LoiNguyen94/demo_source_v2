@@ -11,6 +11,7 @@ import DetailComponent from './DetailComponent';
 interface DetailProps {
   match?: { params: { id: any } };
   detail: undefined;
+  id:string
 }
 const DetailContainer = (props: DetailProps) => {
   const [data, setData] = useState(props.detail);
@@ -21,8 +22,8 @@ const DetailContainer = (props: DetailProps) => {
   }, []);
   const fetchDetail = async () => {
     try {
-      const id = props?.match?.params?.id;
-      const detail = await getProductDetail(id);
+      // const id = props?.match?.params?.id;
+      const detail = await getProductDetail(props.id);
       setData(detail);
     } catch (err) {}
   };
