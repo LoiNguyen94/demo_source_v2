@@ -1,8 +1,8 @@
-import {
-  getProductDetail,
-  getListProduct,
-  isWeb,
-} from '@monorepo/function-shares';
+// import {
+//   getProductDetail,
+//   getListProduct,
+//   isWeb,
+// } from '@monorepo/function-shares';
 import dynamic from 'next/dynamic';
 import Detail from './IonDetail';
 import { GetServerSideProps } from 'next';
@@ -35,12 +35,12 @@ export default dynamic(() => Promise.resolve(Detail), { ssr: true });
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
-    const id = context?.params?.id;
-    // const res = await fetch(
-    //   `https://dev-api.itaphoa.com/customer/products/${id}`
-    // );
-    const detail = await getProductDetail(id.toString());
-    return { props: { detail } };
+    // const id = context?.params?.id;
+    // // const res = await fetch(
+    // //   `https://dev-api.itaphoa.com/customer/products/${id}`
+    // // );
+    // const detail = await getProductDetail(id.toString());
+    // return { props: { detail } };
   } catch (err: any) {
     return { props: { errors: err.message } };
   }
