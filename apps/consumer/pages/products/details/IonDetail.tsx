@@ -11,7 +11,7 @@ import DetailComponent from './DetailComponent';
 interface DetailProps {
   match?: { params: { id: any } };
   detail: undefined;
-  id:string
+  id: string;
 }
 const DetailContainer = (props: DetailProps) => {
   const [data, setData] = useState(props.detail);
