@@ -10,7 +10,8 @@
     "start": "nx serve",
     "build": "nx build",
     "consumer:build": "env-cmd -f .env.local npx nx build consumer --prod",
-    "test": "nx test"
+    "test": "nx test",
+    "postinstall": "patch-package"
   },
   "private": true,
   "dependencies": {
@@ -40,6 +41,7 @@
     "moment": "^2.29.3",
     "next": "12.1.2",
     "next-redux-wrapper": "^7.0.5",
+    "patch-package": "^6.4.7",
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-otp-input": "^2.4.0",

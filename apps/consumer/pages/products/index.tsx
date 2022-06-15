@@ -6,20 +6,33 @@ import {
   useNavigation,
 } from '@monorepo/function-shares';
 import Image from 'next/image';
-import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { Row, Col, Card } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
+import { useEffect, useState } from 'react';
 
 const { Meta } = Card;
 
 export interface ProductProps {
   id: number;
-  data: any;
 }
 
 function Products(props: ProductProps) {
-  const { data } = props;
+  const [data, setData] = useState([]);
+  const {} = props;
   const { pushScreenParam } = useNavigation();
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const data = await getListProduct();
+      setData(data);
+    } catch (err) {}
+  };
+
   return (
     <div>
       <TransitionLayout
@@ -45,8 +58,8 @@ function Products(props: ProductProps) {
                         span={12}
                       >
                         <div
-                          onClick={() =>{
-                            console.log("navigate")
+                          onClick={() => {
+                            console.log('navigate');
                             // pushScreenParam(SCREEN.detail_product, item?.id)
                           }}
                         >
@@ -87,11 +100,4 @@ function Products(props: ProductProps) {
   );
 }
 
-export async function getStaticProps(context) {
-  // Fetch data from external API
-  const data = await getListProduct();
-  // Pass data to the page via props
-  return { props: { data } };
-}
-
-export default Products;
+export default dynamic(() => Promise.resolve(Products), { ssr: false });
