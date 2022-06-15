@@ -190,7 +190,7 @@ export function LocationScreen(props: LocationProps) {
         });
         break;
       case 'phone':
-        dispatch(chooseItemAddress({ ...address, phone: value }));
+        dispatch(chooseItemAddress({ ...address, phone: value + '' }));
         setError({ ...error, phoneInfo: _validPhone(value) });
         break;
     }
