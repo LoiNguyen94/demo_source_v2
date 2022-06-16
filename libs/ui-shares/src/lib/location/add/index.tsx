@@ -52,7 +52,9 @@ export function LocationScreen(props: LocationProps) {
     if (type === 'edit') {
       if (
         !listAddress ||
-        Object.values(address).every((i) => i && i !== '' && i !== NaN)
+        Object.values(address).every(
+          (i) => i !== undefined && i !== '' && i !== NaN
+        )
       )
         return;
       const callBackAddress = listAddress.filter(
