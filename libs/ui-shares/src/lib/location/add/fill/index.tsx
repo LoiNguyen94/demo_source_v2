@@ -9,10 +9,11 @@ import {
   ToastLoading,
   TypeToastifyLoading,
 } from '@monorepo/ui-shares';
-import { getLocationGeoApi, useNavigation } from '@monorepo/function-shares';
+import { getLocationGeoApi, handleResponse } from '@monorepo/function-shares';
 import { useState, useRef, useEffect } from 'react';
 import { useWindowSize, chooseItemAddress } from '@monorepo/function-shares';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 
 export interface FillNewAddressProps {
   id?: number;
@@ -23,7 +24,7 @@ export function FillNewAddressScreen(props: FillNewAddressProps) {
   const dispath = useDispatch();
   const refToastifyLoading = useRef<TypeToastifyLoading>();
   const input = useRef(null);
-  const { goBack } = useNavigation();
+  const router = useRouter();
   const address = useSelector((state: any) => state['ItemAddress']);
   const [visible, setVisible] = useState(false);
 
@@ -108,36 +109,38 @@ export function FillNewAddressScreen(props: FillNewAddressProps) {
         confirmLocation: 'exactly',
       })
     );
-    goBack();
+    router.back();
   };
 
   return (
     <div style={{ marginTop: 85, paddingBottom: 125 }}>
       <div className={styles['container_item']}>Địa chỉ</div>
-
-      <Input
-        ref={input}
-        bordered={false}
+      <div
+        className={`${styles['row_between_center']}`}
         style={{
-          color: '#0F172A',
-          backgroundColor: '#ffffff',
-          padding: '9px 16px 9px 16px',
+          padding: '8px 16px 8px 16px',
+          backgroundColor: 'white',
+          marginBottom: 4,
         }}
-        allowClear={{
-          clearIcon: (
-            <CloseOutlined
-              style={{ fontSize: 11, color: '#0F172A', cursor: 'pointer' }}
-            />
-          ),
-        }}
-        placeholder={'Số nhà, tên đường'}
-        onChange={handleChangeInput}
-        value={address['other']}
-      />
-
+      >
+        <Input
+          ref={input}
+          bordered={false}
+          style={{ color: '#0F172A', padding: 0 }}
+          placeholder={'Số nhà, tên đường'}
+          onChange={handleChangeInput}
+          value={address['other']}
+        />
+        {address['other'] && (
+          <CloseOutlined
+            onClick={clearInput}
+            style={{ fontSize: 11, color: '#0F172A', cursor: 'pointer' }}
+          />
+        )}
+      </div>
       <div
         onClick={() => setVisible(true)}
-        style={{ marginTop: 4 }}
+        style={{}}
         className={`${styles['title_item']} ${styles['row_between_center']}`}
       >
         {address['city'] && address['ward'] && address['dist'] ? (
@@ -159,14 +162,13 @@ export function FillNewAddressScreen(props: FillNewAddressProps) {
         </span>
       </div>
 
-      {address['lat'] && address['lng'] ? (
+      {address['lat'] && address['lng'] && (
         <>
           <div className={styles['container_item']}>Vị trí trên bản đồ</div>
           <PageMap
-            active={true}
             defaultMarker={{
-              latitude: parseFloat(address['lat']),
-              longitude: parseFloat(address['lng']),
+              latitude: address['lat'],
+              longitude: address['lng'],
             }}
             onLocationChange={onLocationChange}
           />
@@ -189,7 +191,7 @@ export function FillNewAddressScreen(props: FillNewAddressProps) {
             />
           </div>
         </>
-      ) : null}
+      )}
 
       {visible && <ModalFillAddress handle={() => setVisible(false)} />}
       {/* @ts-ignored */}

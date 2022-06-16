@@ -1,14 +1,11 @@
 import { useState, useEffect } from 'react';
+import styles from './layout.module.scss';
 import { SvgList, Buttons } from '@monorepo/ui-shares';
-import {
-  SCREEN,
-  setTabPosition,
-  useAppSelector,
-  useNavigation,
-  useWindowSize,
-} from '@monorepo/function-shares';
+import { setTabPosition, useAppSelector } from '@monorepo/function-shares';
 import { useDispatch } from 'react-redux';
-import { useTransition, config, useSpringRef, animated } from 'react-spring';
+import { Storage } from '@capacitor/storage';
+import { useRouter } from 'next/router';
+
 export interface TabBottomProps {
   title?: string;
   description?: string;
@@ -17,51 +14,49 @@ export interface TabBottomProps {
 }
 
 export function TabBottom({ width }: TabBottomProps) {
-  const { widthFixed } = useWindowSize();
-  const [focusTab, setFocusTab] = useState(0);
+  const [focusTab, setFocusTab] = useState(1);
   const [auth, setAuth] = useState(false);
   const dispatch = useDispatch();
-  const token = useAppSelector((state) => state.auth.token);
-  const { push } = useNavigation();
-  const transRef = useSpringRef();
+  const token = useAppSelector(state => state.auth.token)
+  const router = useRouter();
 
   useEffect(() => {
-    if (token) {
-      setAuth(true);
-    } else {
-      setAuth(false);
+    if(token) {
+      setAuth(true)
+    }else {
+      setAuth(false)
     }
   }, [token]);
 
   const Items = [
     {
-      id: 0,
+      id: 1,
       title: 'Mio',
       icon: <SvgList.SvgTabMioIcon keyFocus={focusTab} colorFocus="#F0224F" />,
     },
     {
-      id: 1,
+      id: 2,
       title: 'Partners',
       icon: (
         <SvgList.SvgTabPartnerIcon keyFocus={focusTab} colorFocus="#F0224F" />
       ),
     },
     {
-      id: 2,
+      id: 3,
       title: 'Đơn hàng',
       icon: (
         <SvgList.SvgTabOrderIcon keyFocus={focusTab} colorFocus="#F0224F" />
       ),
     },
     {
-      id: 3,
+      id: 4,
       title: 'Trợ lý',
       icon: (
         <SvgList.SvgTabAssistantIcon keyFocus={focusTab} colorFocus="#F0224F" />
       ),
     },
     {
-      id: 4,
+      id: 5,
       title: 'Tài khoản',
       icon: (
         <SvgList.SvgTabProfileIcon keyFocus={focusTab} colorFocus="#F0224F" />
@@ -75,77 +70,47 @@ export function TabBottom({ width }: TabBottomProps) {
   };
 
   const goToLogin = () => {
-    push(SCREEN.login);
+    router.push('./login');
   };
-
-  const transitions = useTransition(true, {
-    // config: config.molasses,
-    from: { opacity: 0, transform: 'translate3d(0, 15%, 0)' },
-    enter: { opacity: 1, transform: 'translate3d(0, 0%, 0)' },
-    leave: { opacity: 0, height: 0, transform: 'translate3d(0, -15%, 0)' },
-    delay: 500,
-    // keys: list.map((item, index) => index)
-  });
 
   return (
     <div
-      style={{
-        position: 'absolute',
-        bottom: 0,
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-      }}
+      style={{ position: 'absolute', bottom: 0, width: width }}
+      className={`${styles['container_tab']} ${styles['p_12_20_0_20']}`}
     >
-      {transitions((styles, item) => (
-        // className={`${styles['container_tab']} ${styles['p_12_20_0_20']}`}
-        <animated.div
-          style={{
-            ...styles,
-            backgroundColor: '#ffffff',
-            display: 'flex',
-            justifyContent: 'space-around',
-            height: '80px',
-            borderRadius: '12px 12px 0px 0px',
-            width: widthFixed,
-            padding: '12px 20px 0px 20px',
-          }}
-        >
-          {!auth ? (
-            <Buttons
-              title="Đăng nhập ngay"
-              handleClick={goToLogin}
-              bgColor={'#EC4261'}
-              titleColor={'#FFFFFF'}
-            />
-          ) : (
-            Items.map((item) => (
-              <div
-                onClick={() => setTab(item.id)}
-                key={item.id}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  flexDirection: 'column',
-                  cursor: 'pointer',
-                  width: 60,
-                }}
-              >
-                {item.icon}
-                <div
-                  style={
-                    item.id === focusTab
-                      ? { fontSize: 12, color: '#F0224F', fontWeight: 700 }
-                      : { fontSize: 12, color: '#9CA5B4', fontWeight: 400 }
-                  }
-                >
-                  {item.title}
-                </div>
-              </div>
-            ))
-          )}
-        </animated.div>
-      ))}
+      {!auth ? (
+        <Buttons
+          title="Đăng nhập ngay"
+          handleClick={goToLogin}
+          bgColor={'#EC4261'}
+          titleColor={'#FFFFFF'}
+        />
+      ) : (
+        Items.map((item) => (
+          <div
+            onClick={() => setTab(item.id)}
+            key={item.id}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'column',
+              cursor: 'pointer',
+              width: 60,
+            }}
+          >
+            {item.icon}
+            <div
+              style={
+                item.id === focusTab
+                  ? { fontSize: 12, color: '#F0224F', fontWeight: 700 }
+                  : { fontSize: 12, color: '#9CA5B4', fontWeight: 400 }
+              }
+            >
+              {item.title}
+            </div>
+          </div>
+        ))
+      )}
     </div>
   );
 }

@@ -23,7 +23,6 @@ export type LocationType = {
 interface Props {
   defaultMarker?: LocationType;
   height?: string;
-  active?: boolean;
   onLocationChange?: ({ latitude, longitude }: LocationType) => void;
 }
 
@@ -31,25 +30,23 @@ const positionOptions = { enableHighAccuracy: true };
 export const PageMap = (props: Props) => {
   const {
     onLocationChange,
-    active = false,
     defaultMarker = { latitude: 10.77608, longitude: 106.659984 },
     height = '400px',
   } = props;
   const [marker, setMarker] = useState<LocationType>(defaultMarker);
-  const [viewport, setViewport] = useState<MapboxProps & InteractiveMapProps>();
+  const [viewport, setViewport] = useState<MapboxProps & InteractiveMapProps>({
+    width: '100%',
+    height: height,
+    latitude: defaultMarker?.latitude ?? 10.77608,
+    longitude: defaultMarker?.longitude ?? 106.659984,
+    zoom: 15,
+    bearing: 0,
+    pitch: 0,
+    transitionInterpolator: new FlyToInterpolator({ speed: 1.2 }),
+  });
 
   useEffect(() => {
     setMarker(defaultMarker);
-    setViewport({
-      width: '100%',
-      height: height,
-      latitude: defaultMarker?.latitude ?? 10.77608,
-      longitude: defaultMarker?.longitude ?? 106.659984,
-      zoom: 15,
-      bearing: 0,
-      pitch: 0,
-      transitionInterpolator: new FlyToInterpolator({ speed: 1.2 }),
-    });
   }, [defaultMarker]);
 
   const onViewportChange = (nextViewport: MapboxProps) => {
@@ -57,7 +54,6 @@ export const PageMap = (props: Props) => {
   };
 
   const onMarkerDragEnd = (event: CallbackEvent) => {
-    if (!active) return;
     setMarker({
       longitude: event.lngLat[0],
       latitude: event.lngLat[1],

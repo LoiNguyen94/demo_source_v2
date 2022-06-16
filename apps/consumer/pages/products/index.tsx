@@ -1,38 +1,19 @@
 import { TransitionLayout, Header } from '@monorepo/ui-shares';
-import {
-  getListProduct,
-  imageLoader,
-  SCREEN,
-  useNavigation,
-} from '@monorepo/function-shares';
+import { getListProduct, imageLoader } from '@monorepo/function-shares';
 import Image from 'next/image';
-import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import { Row, Col, Card } from 'antd';
 import { ShoppingCartOutlined } from '@ant-design/icons';
-import { useEffect, useState } from 'react';
 
 const { Meta } = Card;
 
 export interface ProductProps {
   id: number;
+  data: any;
 }
 
 function Products(props: ProductProps) {
-  const [data, setData] = useState([]);
-  const {} = props;
-  const { pushScreenParam } = useNavigation();
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const data = await getListProduct();
-      setData(data);
-    } catch (err) {}
-  };
-
+  const { data } = props;
   return (
     <div>
       <TransitionLayout
@@ -57,12 +38,7 @@ function Products(props: ProductProps) {
                         key={item.id}
                         span={12}
                       >
-                        <div
-                          onClick={() => {
-                            console.log('navigate');
-                            // pushScreenParam(SCREEN.detail_product, item?.id)
-                          }}
-                        >
+                        <Link href={`/products/details/${item?.id}`}>
                           <a>
                             <Card
                               hoverable
@@ -88,7 +64,7 @@ function Products(props: ProductProps) {
                               />
                             </Card>
                           </a>
-                        </div>
+                        </Link>
                       </Col>
                     )
                 )}
@@ -100,4 +76,11 @@ function Products(props: ProductProps) {
   );
 }
 
-export default dynamic(() => Promise.resolve(Products), { ssr: false });
+export async function getStaticProps(context) {
+  // Fetch data from external API
+  const data = await getListProduct();
+  // Pass data to the page via props
+  return { props: { data } };
+}
+
+export default Products;

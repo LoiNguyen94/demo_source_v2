@@ -35,8 +35,6 @@ export * from './lib/location/component/modal_pick_secsion_delivery';
 
 export * from './assets/store.local';
 export * from './assets/store.svg';
-
 export * from './lib/form_login';
 export * from './lib/form_register';
 export * from './lib/loading';
-export * from './hocs';

@@ -1,11 +1,8 @@
 import styles from './../../add/add.module.scss';
 import { PageMap, ErrorOneLine } from '@monorepo/ui-shares';
-import {
-  ChooseItemAddessState,
-  SCREEN,
-  useNavigation,
-} from '@monorepo/function-shares';
+import { ChooseItemAddessState } from '@monorepo/function-shares';
 import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 
 export interface FilledAddressProps {
   id?: number;
@@ -14,14 +11,14 @@ export interface FilledAddressProps {
 
 export function FilledAddress(props: FilledAddressProps) {
   const { data } = props;
-  const { push } = useNavigation();
+  const router = useRouter();
   // const address = useSelector((state: any) => state['ItemAddress']);
   if (!data) return <></>;
   return data['city'] && data['ward'] && data['dist'] && data['other'] ? (
     <>
       <div className={`${styles['title_item']}`}>
         <div
-          onClick={() => push(SCREEN.fill_address)}
+          onClick={() => router.push('/location/add/fill')}
           style={{ marginBottom: 8, color: '#0F172A' }}
         >
           {data['other'] +
@@ -32,15 +29,13 @@ export function FilledAddress(props: FilledAddressProps) {
             ', ' +
             data['city']?.name}
         </div>
-        {data['lat'] && data['lng'] ? (
-          <PageMap
-            defaultMarker={{
-              latitude: parseFloat(data['lat']),
-              longitude: parseFloat(data['lng']),
-            }}
-            height="120px"
-          />
-        ) : null}
+        <PageMap
+          defaultMarker={{
+            latitude: data['lat'],
+            longitude: data['lng'],
+          }}
+          height="120px"
+        />
       </div>
       <ErrorOneLine
         content={data['confirmLocation'] ? '' : 'Địa chỉ chưa được xác nhận'}
@@ -48,7 +43,7 @@ export function FilledAddress(props: FilledAddressProps) {
     </>
   ) : (
     <div
-      onClick={() => push(SCREEN.fill_address)}
+      onClick={() => router.push('/location/add/fill')}
       className={`${styles['title_item']}`}
     >
       Nhập địa chỉ của bạn

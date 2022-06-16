@@ -9,7 +9,7 @@ export default function SvgTabProfileIcon({
   colorFocus?: string;
   keyFocus?: number;
 }) {
-  const focus = keyFocus !== 4;
+  const focus = keyFocus !== 5;
 
   return (
     <svg width="30" height="30" viewBox="0 0 30 30" fill="none">

@@ -1,3 +1,5 @@
+import { Header } from '@monorepo/ui-shares';
+
 export interface TabPartnerProps {
   id?: string;
   data?: any;

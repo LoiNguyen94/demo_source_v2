@@ -9,7 +9,6 @@ import {
   RegisterData,
   RegisterFormType,
   Loading,
-  withIonicPage,
 } from '@monorepo/ui-shares';
 import { Storage } from '@capacitor/storage';
 import { ModalOtp, TypeModalOtpInput } from '@monorepo/ui-shares';
@@ -19,11 +18,9 @@ import {
   handleResponse,
   loginSuccess,
   phoneExistApi,
-  SCREEN,
   sendOtpApi,
   setDefaultToken,
   signupApi,
-  useNavigation,
   useWindowSize,
 } from '@monorepo/function-shares';
 import { SignUpParam } from '@monorepo/function-shares';
@@ -39,7 +36,7 @@ function Register() {
   const [isLoading, setLoading] = useState<boolean>(false);
   const [registerData, setRegisterData] = useState<SignUpParam>();
   const { height, widthFixed } = useWindowSize();
-  const { goBack, replaceScreen } = useNavigation();
+  const route = useRouter();
   const dispatch = useDispatch();
   const showModal = useCallback(() => {
     refModalOtp.current.show();
@@ -115,10 +112,10 @@ function Register() {
                 key: 'profile',
                 value: JSON.stringify(response.data.data?.profile ?? {}),
               });
-              replaceScreen(SCREEN.home);
+              route.replace('./home');
             },
             error: () => {
-              replaceScreen(SCREEN.home);
+              route.replace('./home');
             },
           });
         } else {
@@ -137,49 +134,51 @@ function Register() {
     [registerData]
   );
   return (
-    <div
-      style={{
-        display: 'flex',
-        width: widthFixed,
-        flex: 1,
-        flexDirection: 'column',
-        height: height,
-        backgroundColor: '#f5f6f9',
-      }}
-    >
-      <Header title={'Đăng ký tài khoản'} />
+    <MainLayout title="Tất cả sản phẩm" description="Mua mọi thứ" photo="">
       <div
         style={{
           display: 'flex',
-          flexDirection: 'column',
+          width: widthFixed,
           flex: 1,
-          alignItems: 'center',
+          flexDirection: 'column',
+          height: height,
+          backgroundColor: '#f5f6f9',
         }}
       >
-        <div style={{ marginTop: 120 }}>
-          <SvgList.SvgMioIcon />
+        <Header title={'Đăng ký tài khoản'} />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            flex: 1,
+            alignItems: 'center',
+          }}
+        >
+          <div style={{ marginTop: 120 }}>
+            <SvgList.SvgMioIcon />
+          </div>
+          <RegisterForm onSubmit={submit} ref={refForm} />
+          <div className={styles['service-privacy-note']}>
+            Bằng việc đăng ký, bạn đã đồng ý với
+          </div>
+          <Row className={styles['service-privacy-note']}>
+            <div style={{ color: '#f0224f', marginRight: 4 }}>
+              Điều khoản Dịch vụ
+            </div>{' '}
+            &
+            <div style={{ color: '#f0224f', marginLeft: 4, marginRight: 4 }}>
+              Chính sách Riêng tư
+            </div>{' '}
+            của Mio.
+          </Row>
         </div>
-        <RegisterForm onSubmit={submit} ref={refForm} />
-        <div className={styles['service-privacy-note']}>
-          Bằng việc đăng ký, bạn đã đồng ý với
-        </div>
-        <Row className={styles['service-privacy-note']}>
-          <div style={{ color: '#f0224f', marginRight: 4 }}>
-            Điều khoản Dịch vụ
-          </div>{' '}
-          &
-          <div style={{ color: '#f0224f', marginLeft: 4, marginRight: 4 }}>
-            Chính sách Riêng tư
-          </div>{' '}
-          của Mio.
-        </Row>
+        <Link href="/login" passHref>
+          <div className={styles['login-form-register']}>
+            Bạn đã có tài khoản?
+            <div className={styles['btn-register']}>Đăng nhập</div>
+          </div>
+        </Link>
       </div>
-      <Link href="/login" passHref>
-        <div className={styles['login-form-register']} onClick={()=> goBack()}>
-          Bạn đã có tài khoản?
-          <div className={styles['btn-register']}>Đăng nhập</div>
-        </div>
-      </Link>
       <ModalOtp
         getOtp={getOtp}
         resendOtp={resendOtp}
@@ -187,13 +186,11 @@ function Register() {
         phone={registerData?.phone}
       />
       {isLoading ? <Loading /> : null}
-    </div>
+    </MainLayout>
   );
 }
 
 export async function getStaticProps(context) {
   return { props: {} };
 }
-export default dynamic(() => Promise.resolve(withIonicPage(Register)), {
-  ssr: false,
-});
+export default dynamic(() => Promise.resolve(Register), { ssr: false });

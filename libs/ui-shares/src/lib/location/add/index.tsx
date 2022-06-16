@@ -1,4 +1,4 @@
-import { DownOutlined, CloseOutlined } from '@ant-design/icons';
+import { DownOutlined } from '@ant-design/icons';
 import { Input, Switch } from 'antd';
 import styles from './add.module.scss';
 import {
@@ -21,11 +21,15 @@ import {
   deletetAddressDeliveryApi,
   fetchListAddressConfig,
   initItemAddessState,
-  makeDataCreateAddress,
-  makeDataCallBackAddress,
 } from '@monorepo/function-shares';
 import FilledAddress from '../component/add/filled_address';
+import { useRouter } from 'next/router';
 import { useState, useRef, useEffect } from 'react';
+import {
+  makeDataCreateAddress,
+  makeDataCallBackAddress,
+} from './../component/add/helper';
+
 export interface LocationProps {
   id?: string;
   type?: string;
@@ -33,9 +37,10 @@ export interface LocationProps {
 
 export function LocationScreen(props: LocationProps) {
   const { id, type } = props;
+  const router = useRouter();
   const address = useSelector((state: any) => state['ItemAddress']);
   const listAddress = useSelector((state: any) => state['address']);
-  const dispatch = useDispatch();
+  const dispath = useDispatch();
   const refToastifyLoading = useRef<TypeToastifyLoading>();
   const [visibleSecsionDelivery, setVisibleSecsionDelivery] = useState(false);
   const [visibleWarningDefault, setVisibleWarningDefault] = useState(false);
@@ -50,20 +55,15 @@ export function LocationScreen(props: LocationProps) {
 
   useEffect(() => {
     if (type === 'edit') {
-      if (
-        !listAddress ||
-        Object.values(address).every(
-          (i) => i !== undefined && i !== '' && i !== NaN
-        )
-      )
-        return;
+      if (!listAddress) return;
       const callBackAddress = listAddress.filter(
-        (data: any) => data?.id.toString() === id
+        (data: any) => data?.id === id
       );
       const callBackData = makeDataCallBackAddress(callBackAddress[0]);
-      dispatch(chooseItemAddress({ ...callBackData }));
+      console.log(callBackData);
+      dispath(chooseItemAddress({ ...callBackData }));
     }
-  }, [id]);
+  }, []);
 
   useEffect(() => {
     if (
@@ -110,18 +110,14 @@ export function LocationScreen(props: LocationProps) {
       const res = await createAddressDeliveryApi(addressParam);
       if (res?.data?.status.code === 200) {
         fetchListAddressConfig();
-        dispatch(chooseItemAddress({ ...initItemAddessState }));
-        refToastifyLoading.current?.success('Thành công', 'back');
+        setTimeout(() => {
+          dispath(chooseItemAddress({ ...initItemAddessState }));
+          refToastifyLoading.current?.success('Thành công', '/location');
+        }, 1500);
       } else {
         refToastifyLoading.current?.fail('Tạo không thành công');
-        setProcessing(false);
       }
-    } catch (err) {
-      refToastifyLoading.current?.fail(
-        err?.response?.data?.message ?? 'Tạo không thành công'
-      );
-      setProcessing(false);
-    }
+    } catch (err) {}
   };
 
   const requestDeleteAddress = async () => {
@@ -142,18 +138,14 @@ export function LocationScreen(props: LocationProps) {
       const res = await deletetAddressDeliveryApi(id + '');
       if (res?.data?.status.code === 200) {
         fetchListAddressConfig();
-        dispatch(chooseItemAddress({ ...initItemAddessState }));
-        refToastifyLoading.current?.success('Thành công', 'back');
+        setTimeout(() => {
+          dispath(chooseItemAddress({ ...initItemAddessState }));
+          refToastifyLoading.current?.success('Thành công', '/location');
+        }, 1500);
       } else {
         refToastifyLoading.current?.fail('Xóa không thành công');
-        setProcessing(false);
       }
-    } catch (err) {
-      refToastifyLoading.current?.fail(
-        err?.response?.data?.message ?? 'Xóa không thành công'
-      );
-      setProcessing(false);
-    }
+    } catch (err) {}
   };
 
   const updateAddress = async () => {
@@ -167,43 +159,39 @@ export function LocationScreen(props: LocationProps) {
       console.log(res);
       if (res?.data?.status.code === 200) {
         fetchListAddressConfig();
-        dispatch(chooseItemAddress({ ...initItemAddessState }));
-        refToastifyLoading.current?.success('Thành công', 'back');
+        setTimeout(() => {
+          dispath(chooseItemAddress({ ...initItemAddessState }));
+          refToastifyLoading.current?.success('Thành công', '/location');
+        }, 1500);
       } else {
         refToastifyLoading.current?.fail('Sửa địa chỉ không thành công');
-        setProcessing(false);
       }
-    } catch (err) {
-      refToastifyLoading.current?.fail(
-        err?.response?.data?.message ?? 'Sửa địa chỉ không thành công'
-      );
-      setProcessing(false);
-    }
+    } catch (err) {}
   };
 
   const handleChangeInput = (e: any) => {
     const { name, value } = e.target;
     switch (name) {
       case 'name':
-        dispatch(chooseItemAddress({ ...address, name: value }));
+        dispath(chooseItemAddress({ ...address, name: value }));
         setError({
           ...error,
           nameInfo: _validLenghtName(value, 3),
         });
         break;
       case 'phone':
-        dispatch(chooseItemAddress({ ...address, phone: value + '' }));
+        dispath(chooseItemAddress({ ...address, phone: value }));
         setError({ ...error, phoneInfo: _validPhone(value) });
         break;
     }
   };
 
   const chooseTypeAddress = (item: any) => {
-    dispatch(chooseItemAddress({ ...address, typeAddress: item }));
+    dispath(chooseItemAddress({ ...address, typeAddress: item }));
   };
 
   const handleSwitchDefault = (e: any) => {
-    dispatch(chooseItemAddress({ ...address, default: e }));
+    dispath(chooseItemAddress({ ...address, default: e }));
   };
 
   return (
@@ -226,22 +214,12 @@ export function LocationScreen(props: LocationProps) {
             <Input
               name={item.name}
               value={address[item.name]}
+              // maxLength={item.id === 2 ? 10 : 1000}
               bordered={false}
               style={{ color: '#0F172A', padding: 0 }}
               placeholder={item.placeHolder}
               type={item.type}
               onChange={handleChangeInput}
-              allowClear={{
-                clearIcon: (
-                  <CloseOutlined
-                    style={{
-                      fontSize: 11,
-                      color: '#0F172A',
-                      cursor: 'pointer',
-                    }}
-                  />
-                ),
-              }}
               onWheel={(event) => event.currentTarget.blur()}
             />
           </div>

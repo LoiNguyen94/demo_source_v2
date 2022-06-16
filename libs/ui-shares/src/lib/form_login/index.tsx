@@ -13,7 +13,7 @@ import {
   useState,
 } from 'react';
 import { SvgList } from '../../assets/store.svg';
-import { phoneNumberValidReg, SCREEN, useNavigation } from '@monorepo/function-shares';
+import { phoneNumberValidReg } from '@monorepo/function-shares';
 
 interface Props {
   onSubmit: ({ phone, password }: { phone: string; password: string }) => void;
@@ -29,7 +29,6 @@ type Ref = {
 };
 const FormLogin: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
   const { onSubmit } = props;
-  const { push } = useNavigation();
   const onFinish = async (values: { phone: string; password: string }) => {
     onSubmit(values);
   };
@@ -71,10 +70,6 @@ const FormLogin: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
       </div>
     );
   };
-
-  const goToForget= () => {
-    push(SCREEN.forget_password)
-  }
   
   return (
     <Form
@@ -210,7 +205,9 @@ const FormLogin: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
         >
           Đăng nhập
         </Button>
-          <div className={styles['login-form-forget']} onClick={goToForget}>Quên mật khẩu</div>
+        <Link href="/forget-password" passHref>
+          <div className={styles['login-form-forget']}>Quên mật khẩu</div>
+        </Link>
       </Form.Item>
     </Form>
   );

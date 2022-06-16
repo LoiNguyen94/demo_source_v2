@@ -9,7 +9,7 @@ export default function SvgTabOrderIcon({
   colorFocus?: string;
   keyFocus?: number;
 }) {
-  const focus = keyFocus !== 2;
+  const focus = keyFocus !== 3;
   return (
     <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
       <path d="M0 0H30V30H0V0Z" fill="white" />

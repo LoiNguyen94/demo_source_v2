@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export type ChooseItemAddessState = {
   name: string;
-  phone: string;
+  phone: number;
   other: string;
   typeAddress: any;
   sessionDelivery: any;
@@ -19,7 +19,7 @@ export type ChooseItemAddessState = {
 // const initialState: QuantityPickerState = { quan: 0 };
 export const initItemAddessState: ChooseItemAddessState = {
   name: '',
-  phone: '',
+  phone: NaN,
   other: '',
   typeAddress: {
     id: 1,

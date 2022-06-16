@@ -132,7 +132,6 @@ const ModalOtpInput: React.ForwardRefRenderFunction<Ref, ModalProps> = (
               <strong>.</strong>
             </span>
           }
-          isInputNum
           onChange={handleChange}
           value={otp}
           containerStyle={{ justifyContent: 'center' }}

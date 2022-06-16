@@ -1,4 +1,4 @@
-import { MainLayout, Header, withIonicPage } from '@monorepo/ui-shares';
+import { MainLayout, Header } from '@monorepo/ui-shares';
 import { useCallback, useRef, useState } from 'react';
 import { ModalOtp, TypeModalOtpInput, Loading } from '@monorepo/ui-shares';
 import ForgetForm, { ForgotData, ForgotFormType } from './forgot_form';
@@ -115,4 +115,4 @@ export async function getStaticProps(context) {
   return { props: {} };
 }
 
-export default dynamic(() => Promise.resolve(withIonicPage(ForgetPassword)), { ssr: false });
+export default dynamic(() => Promise.resolve(ForgetPassword), { ssr: false });

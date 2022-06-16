@@ -1,20 +1,20 @@
 import { WarningOutlined, PlusOutlined } from '@ant-design/icons';
 import Item from '../component/item_list';
+import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { IAddress } from '@monorepo/model';
-import { SCREEN, useNavigation } from '@monorepo/function-shares';
 export interface LocationListProps {
   id?: number;
 }
 
 export function LocationListScreen(props: LocationListProps) {
-  const { push } = useNavigation();
+  const router = useRouter();
   const addressList = useSelector((state: any) => state['address']);
-
   const [defaultAdd, setDefaultAdd] = useState();
 
   useEffect(() => {
+    console.log(addressList)
     if (!addressList || Object.keys(addressList).length === 0) return;
     const defaultAddress = addressList.filter(
       (item: any) => item?.is_default === true
@@ -84,7 +84,7 @@ export function LocationListScreen(props: LocationListProps) {
         Thêm địa chỉ
       </div>
       <div
-        onClick={() => push(SCREEN.add_new_address)}
+        onClick={() => router.push('./location/add')}
         style={{ padding: '16px', backgroundColor: 'white' }}
       >
         <div style={{ cursor: 'pointer' }}>

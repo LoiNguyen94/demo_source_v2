@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = 0;
+const initialState = 1;
 
 const tabPositionSlice = createSlice({
   name: 'AddTabPosition',

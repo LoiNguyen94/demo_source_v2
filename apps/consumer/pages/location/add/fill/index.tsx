@@ -2,7 +2,6 @@ import {
   TransitionLayout,
   Header,
   FillNewAddressScreen,
-  withIonicPage
 } from '@monorepo/ui-shares';
 import dynamic from 'next/dynamic';
 
@@ -26,6 +25,6 @@ function FillAddressScreen(props: FillAddressProps) {
 }
 
 // export default FillAddressScreen
-export default dynamic(() => Promise.resolve(withIonicPage(FillAddressScreen)), {
+export default dynamic(() => Promise.resolve(FillAddressScreen), {
   ssr: false,
 });

@@ -1,7 +1,8 @@
 import { HomeOutlined } from '@ant-design/icons';
 import { Row, Col } from 'antd';
 import { IAddress } from '@monorepo/model';
-import { SCREEN, useNavigation } from '@monorepo/function-shares';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 export interface LocationItemProps {
   id?: number;
   type?: string;
@@ -9,7 +10,7 @@ export interface LocationItemProps {
 }
 
 export function LocationItem({ type, id, data }: LocationItemProps) {
-  const { pushRaw } = useNavigation();
+  const router = useRouter();
   return (
     <div
       style={{
@@ -44,21 +45,21 @@ export function LocationItem({ type, id, data }: LocationItemProps) {
               <span>{data?.delivery_phone}</span>
             </div>
             {type !== 'default' && (
-              <a>
-                <div
-                  onClick={() => {
-                    pushRaw(`/location/edit?id=${data?.id}`);
-                  }}
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 500,
-                    color: '#2979FF',
-                    cursor: 'pointer',
-                  }}
-                >
-                  Sửa
-                </div>
-              </a>
+                <a>
+                  <div
+                    onClick={() => {
+                      router.push({ query: { id: data?.id}, pathname: '/location/edit'})
+                    }}
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 500,
+                      color: '#2979FF',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Sửa
+                  </div>
+                </a>
             )}
           </div>
           <div

@@ -26,6 +26,3 @@ export * from './lib/extra/loader';
 export * from './lib/extra/fetchDataConfig';
 
 export * from './lib/valid/index';
-export * from './lib/route';
-
-export * from './lib/data/makeData';
