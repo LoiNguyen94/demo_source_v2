@@ -52,6 +52,7 @@ function HomeIndex(props: HomeIndex) {
       showTab={true}
     >
       <HomeConsumer data={items} position={positionTab} list_category={list_category}/>
+      
     </TransitionLayout>
   );
 }
