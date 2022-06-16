@@ -20,7 +20,6 @@ function CustomApp({ Component, pageProps }: AppProps) {
             "https://play-lh.googleusercontent.com/4muB4i5PE_vT7ZcTMvEHFSzwfDEjrL04-MuXDZMpgNtfqGtw3i06gzDBfePkJqa9na8"
           }
         />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="app">
         <Component {...pageProps} />
