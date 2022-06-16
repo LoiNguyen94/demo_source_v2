@@ -43,7 +43,7 @@ export type AddressParam = {
   delivery_time_end: string;
   delivery_time_start: string;
   delivery_name: string;
-  delivery_phone: number;
+  delivery_phone: string;
   delivery_address_json: DeliveryAddressJson;
   session_delivery_json: SessionDeliveryJson;
   address_type_json: AddressTypeJson;
@@ -78,7 +78,7 @@ export enum APIEndPoint {
   delete_address_delivery = 'delete_address_delivery',
   list_flash_sale = 'list_flash_sale',
   get_region = 'get_region',
-  list_category = 'list_category'
+  list_category = 'list_category',
 }
 export interface Params {
   [APIEndPoint.login]: { phone: string; password: string };
