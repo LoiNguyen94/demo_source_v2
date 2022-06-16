@@ -1,0 +1,28 @@
+{
+  "root": "apps/seo-e2e",
+  "sourceRoot": "apps/seo-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/seo-e2e/cypress.json",
+        "devServerTarget": "seo:serve"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "seo:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/seo-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["seo"]
+}

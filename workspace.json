@@ -3,8 +3,10 @@
   "projects": {
     "consumer": "apps/consumer",
     "function-shares": "libs/function-shares",
-    "partner": "apps/partner",
     "model": "libs/model",
+    "partner": "apps/partner",
+    "seo": "apps/seo",
+    "seo-e2e": "apps/seo-e2e",
     "ui-shares": "libs/ui-shares"
   }
 }
