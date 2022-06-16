@@ -45,7 +45,7 @@ function App({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     if (!loading) {
-      route.replace('/home');
+      // route.replace('/home');
     }
   }, [loading]);
   return (
