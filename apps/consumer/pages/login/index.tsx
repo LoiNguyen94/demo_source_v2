@@ -32,7 +32,7 @@ export interface LoginProps {
 }
 
 function LoginScreen(props: LoginProps) {
-  const { replaceScreen, push } = useNavigation();
+  const { goBack, push } = useNavigation();
   const dispatch = useDispatch();
   const refForm = useRef<LoginFormType>();
   const { height, widthFixed } = useWindowSize();
@@ -60,7 +60,7 @@ function LoginScreen(props: LoginProps) {
             setDefaultToken(res.data.data.token);
             fetchListAddressConfig();
             if (isWeb) push(SCREEN.home);
-            else replaceScreen(SCREEN.root);
+            else goBack();
           },
           error: (res) => {
             refForm.current.setMessageError({
