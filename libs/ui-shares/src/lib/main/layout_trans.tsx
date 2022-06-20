@@ -1,6 +1,5 @@
 import { useState, ReactNode, useEffect, memo } from 'react';
 import styles from './layout.module.scss';
-import Head from 'next/head';
 import { useWindowSize } from '@monorepo/function-shares';
 import { useRouter } from 'next/router';
 export interface LayoutTransProps {
@@ -48,17 +47,6 @@ export const TransitionLayout = memo(
     ]);
 
     return (
-      <div>
-        <Head>
-          <title>{title}</title>
-          <meta
-            name="viewport"
-            content="initial-scale=1.0, user-scalable=no"
-          />
-          <meta property="og:title" content={title} key="title" />
-          <meta property="og:description" content={description} />
-          <meta property="og:image" content={photo} />
-        </Head>
         <div style={{ height: height }} className={styles['container']}>
           <div
             style={{ width: widthFixed }}
@@ -73,7 +61,6 @@ export const TransitionLayout = memo(
             {displayChildren}
           </div>
         </div>
-      </div>
     );
   }
 );
