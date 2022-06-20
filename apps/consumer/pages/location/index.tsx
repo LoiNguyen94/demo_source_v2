@@ -2,6 +2,7 @@ import {
   TransitionLayout,
   Header,
   LocationListScreen,
+  withIonicPage,
 } from '@monorepo/ui-shares';
 import dynamic from 'next/dynamic';
 
@@ -23,4 +24,6 @@ function LocationScreen(props: LocationProps) {
     </div>
   );
 }
-export default dynamic(() => Promise.resolve(LocationScreen), { ssr: false });
+export default dynamic(() => Promise.resolve(withIonicPage(LocationScreen)), {
+  ssr: false,
+});

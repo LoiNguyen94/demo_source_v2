@@ -1,45 +1,45 @@
-import { Detail } from '@monorepo/ui-shares';
-import { TransitionLayout, Header } from '@monorepo/ui-shares';
-import { getProductDetail, getListProduct } from '@monorepo/function-shares';
+import {
+  getProductDetail,
+  getListProduct,
+  isWeb,
+} from '@monorepo/function-shares';
 import dynamic from 'next/dynamic';
+import Detail from './IonDetail';
+import { GetServerSideProps } from 'next';
+export default dynamic(() => Promise.resolve(Detail), { ssr: true });
 
-const DetailPro = ({ detail, errors }: any) => {
-  if (errors) {
-    return <span style={{ color: 'red' }}>ERR: {errors}</span>;
-  }
+// export const getStaticPaths = async () => {
+//   // const res = await fetch(`https://dev-api.itaphoa.com/customer/products`);
+//   // const data = await res.json();
 
-  return (
-    <TransitionLayout
-      title={detail?.name}
-      photo={detail?.photo}
-      description={detail?.log_time}
-    >
-      <Header title="Chi tiết sản phẩm" />
-      <Detail detail={detail} errors={errors} />
-    </TransitionLayout>
-  );
-};
+//   const data = await getListProduct();
+//   const paths = data.map((item) => ({
+//     params: { id: item.id.toString() },
+//   }));
 
-export default dynamic(() => Promise.resolve(DetailPro), { ssr: false });
+//   return { paths, fallback: true };
+// };
 
-export const getStaticPaths = async () => {
-  // const res = await fetch(`https://dev-api.itaphoa.com/customer/products`);
-  // const data = await res.json();
-  const data = await getListProduct();
-  const paths = data.map((item) => ({
-    params: { id: item.id.toString() },
-  }));
+// export const getStaticProps = async ({ params }) => {
+//   try {
+//     const id = params?.id;
+//     // const res = await fetch(
+//     //   `https://dev-api.itaphoa.com/customer/products/${id}`
+//     // );
+//     const detail = await getProductDetail(id);
+//     return { props: { detail } };
+//   } catch (err: any) {
+//     return { props: { errors: err.message } };
+//   }
+// };
 
-  return { paths, fallback: true };
-};
-
-export const getStaticProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
-    const id = params?.id;
+    const id = context?.params?.id;
     // const res = await fetch(
     //   `https://dev-api.itaphoa.com/customer/products/${id}`
     // );
-    const detail = await getProductDetail(id);
+    const detail = await getProductDetail(id.toString());
     return { props: { detail } };
   } catch (err: any) {
     return { props: { errors: err.message } };

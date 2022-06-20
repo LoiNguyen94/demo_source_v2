@@ -14,7 +14,7 @@
     "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "resolveJsonModule": true,
+    "resolveJsonModule":true,
     "baseUrl": ".",
     "paths": {
       "@monorepo/function-shares": ["libs/function-shares/src/index.ts"],

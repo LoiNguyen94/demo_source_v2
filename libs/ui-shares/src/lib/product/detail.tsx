@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, Rate, Row, Col, Button } from 'antd';
+import { Card, Row, Col, Button } from 'antd';
 import Image from 'next/image';
 import styles from './product.module.scss';
 
@@ -26,13 +26,12 @@ import {
 
 export interface DetailProps {
   detail: any;
-  errors: any;
 }
 
 export function Detail(props: DetailProps) {
-  const { errors, detail } = props;
+  const {detail } = props;
   const fakeData = ['Bao ăn', '1 đổi 1'];
-  const [countStar, setCountStar] = useState(1);
+  // const [countStar, setCountStar] = useState(1);
   const [visibleModalProductInfo, setVisibleModalProductInfo] = useState(false);
   const [visibleModalAddCart, setVisibleModalAddCart] = useState(false);
   const { widthFixed } = useWindowSize();
@@ -42,8 +41,8 @@ export function Detail(props: DetailProps) {
   );
   const priceMio = priceList[0]?.price;
 
-  if (errors) {
-    return <span style={{ color: 'red' }}>ERR: {errors}</span>;
+  if (!detail) {
+    return null
   }
 
   return (

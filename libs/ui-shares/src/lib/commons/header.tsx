@@ -1,23 +1,44 @@
 import styles from './common.module.scss';
-import { useRouter } from 'next/router';
 import { Button, Input, Badge } from 'antd';
 import { SvgList } from '@monorepo/ui-shares';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { IAddress } from '@monorepo/model';
-import { signOut, useAppSelector } from '@monorepo/function-shares';
+import {
+  SCREEN,
+  signOut,
+  useAppSelector,
+  useNavigation,
+  chooseItemAddress,
+  initItemAddessState,
+} from '@monorepo/function-shares';
 export interface HeaderShortProps {
   title: string;
+  keyPage?: string;
   subtitle?: string;
 }
 
-const HeaderShort = ({ title, subtitle }: HeaderShortProps) => {
-  const router = useRouter();
+const HeaderShort = ({ title, subtitle, keyPage }: HeaderShortProps) => {
+  const { goBack } = useNavigation();
+  const dispatch = useDispatch();
+
+  const handelBack = () => {
+    switch (keyPage) {
+      case 'add-edit-location': {
+        dispatch(chooseItemAddress({ ...initItemAddessState }));
+        break;
+      }
+      default:
+        break;
+    }
+    goBack();
+  };
+
   return (
     <div className={styles['container_header']} style={{ height: 90 }}>
       <div style={{ position: 'absolute', bottom: 11 }}>
         <Button
-          onClick={() => router.back()}
+          onClick={() => handelBack()}
           style={{ backgroundColor: 'rgba(255,255,255,0)', border: 'none' }}
         >
           <SvgList.SvgLeftArrow />
@@ -33,12 +54,12 @@ export interface HeaderHomeProps {
 }
 
 const HeaderHome = ({ subtitle }: HeaderHomeProps) => {
-  const router = useRouter(); 
+  const { push, replaceScreen } = useNavigation();
   const dispatch = useDispatch();
   const addressList = useSelector((state: any) => state['address']);
-  const token = useAppSelector(state => state.auth?.token)
+  const token = useAppSelector((state) => state.auth?.token);
 
-  const isAuth = token !== undefined
+  const isAuth = token !== undefined;
   const [defaultAdd, setDefaultAdd] = useState<IAddress>();
 
   useEffect(() => {
@@ -50,17 +71,14 @@ const HeaderHome = ({ subtitle }: HeaderHomeProps) => {
   }, [addressList]);
 
   const goToLocation = () => {
-    if(isAuth) {
-      router.push('./location')
+    if (isAuth) {
+      push(SCREEN.location);
     }
-  }
+  };
   return (
     <div className={styles['container_header_home']} style={{ height: 150 }}>
       <div className={styles['row_between_center']}>
-        <div
-          onClick={goToLocation}
-          className={'click_effect'}
-        >
+        <div onClick={goToLocation} className={'click_effect'}>
           <div style={{ fontSize: 14, fontWeight: 500, color: '#ffffff' }}>
             Giao tới
           </div>
@@ -77,12 +95,19 @@ const HeaderHome = ({ subtitle }: HeaderHomeProps) => {
           </div>
         </div>
         <div style={{ marginRight: 17 }} className={styles['row_center']}>
-          <div className={'click_effect'} style={{ marginRight: 20 }} onClick={() => dispatch(signOut(""))}>
+          <div
+            className={'click_effect'}
+            style={{ marginRight: 20 }}
+            onClick={() => { 
+                dispatch(signOut(''))
+                replaceScreen(SCREEN.root)
+              }}
+          >
             <Badge size="default" count={0}>
               <SvgList.SvgBell />
             </Badge>
           </div>
-          <div className={'click_effect'}>
+          <div className={'click_effect'} onClick={() => push(SCREEN.login)}>
             <Badge size="default" count={10}>
               <SvgList.SvgCart />
             </Badge>
@@ -103,11 +128,16 @@ export interface HeaderProps {
   type?: string;
   title: string;
   subtitle?: string;
+  keyPage?: string;
 }
 
 export function Header(props: HeaderProps) {
-  const { title, subtitle, type } = props;
-  return type === 'TabMio' ? <HeaderHome /> : <HeaderShort title={title} />;
+  const { title, subtitle, type, keyPage } = props;
+  return type === 'TabMio' ? (
+    <HeaderHome />
+  ) : (
+    <HeaderShort title={title} keyPage={keyPage} />
+  );
 }
 
 export default Header;

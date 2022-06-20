@@ -5,6 +5,7 @@ import {
   LoginForm,
   Loading,
   LoginFormType,
+  withIonicPage,
 } from '@monorepo/ui-shares';
 import {
   handleResponse,
@@ -12,6 +13,9 @@ import {
   setDefaultToken,
   useWindowSize,
   fetchListAddressConfig,
+  useNavigation,
+  SCREEN,
+  isWeb,
 } from '@monorepo/function-shares';
 import styles from './login.module.scss';
 import { Storage } from '@capacitor/storage';
@@ -28,7 +32,7 @@ export interface LoginProps {
 }
 
 function LoginScreen(props: LoginProps) {
-  const route = useRouter();
+  const { replaceScreen, push } = useNavigation();
   const dispatch = useDispatch();
   const refForm = useRef<LoginFormType>();
   const { height, widthFixed } = useWindowSize();
@@ -55,7 +59,8 @@ function LoginScreen(props: LoginProps) {
             });
             setDefaultToken(res.data.data.token);
             fetchListAddressConfig();
-            route.replace('/home');
+            if (isWeb) push(SCREEN.home);
+            else replaceScreen(SCREEN.root);
           },
           error: (res) => {
             refForm.current.setMessageError({
@@ -73,6 +78,9 @@ function LoginScreen(props: LoginProps) {
           msg: err?.response?.data?.message ?? '',
         });
       });
+  };
+  const goToRegister = () => {
+    push(SCREEN.register);
   };
   return (
     <TransitionLayout
@@ -97,15 +105,15 @@ function LoginScreen(props: LoginProps) {
           </div>
           <LoginForm onSubmit={submit} ref={refForm} />
         </div>
-        <Link href="/register" passHref>
-          <div className={styles['login-form-register']}>
-            Bạn chưa có tài khoản?
-            <div className={styles['btn-register']}>Đăng ký</div>
-          </div>
-        </Link>
+        <div className={styles['login-form-register']} onClick={goToRegister}>
+          Bạn chưa có tài khoản?
+          <div className={styles['btn-register']}>Đăng ký</div>
+        </div>
         {isLoading ? <Loading /> : null}
       </div>
     </TransitionLayout>
   );
 }
-export default dynamic(() => Promise.resolve(LoginScreen), { ssr: false });
+export default dynamic(() => Promise.resolve(withIonicPage(LoginScreen)), {
+  ssr: false,
+});

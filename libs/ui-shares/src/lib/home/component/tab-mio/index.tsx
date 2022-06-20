@@ -1,18 +1,21 @@
 import { ICategory } from '@monorepo/model';
-import { TransitionLayout, Header } from '@monorepo/ui-shares';
+import { TransitionLayout, Header, Buttons } from '@monorepo/ui-shares';
+import { isWeb, SCREEN, useNavigation } from '@monorepo/function-shares';
 import Banner from './banner';
 import Category from './category';
 import FlashSale from './flashsale';
-
+import { ReactNode, memo } from 'react';
 export interface TabMioProps {
   id?: string;
   data?: any;
-  list_category: ICategory[]
+  list_category: ICategory[];
 }
-
-export function TabMio({ data,list_category }: TabMioProps) {
+const Layout = ({ children }: { children: ReactNode }) =>
+isWeb ? <>{children}</> : <TransitionLayout>{children}</TransitionLayout>;
+export function TabMio({ data, list_category }: TabMioProps) {
+  const { push } = useNavigation();
   return (
-    <>
+    <Layout>
       <Header title="" type="TabMio" />
       <div
         style={{
@@ -25,7 +28,7 @@ export function TabMio({ data,list_category }: TabMioProps) {
         <Category data={list_category} />
         <FlashSale data={data} />
       </div>
-    </>
+    </Layout>
   );
 }
 

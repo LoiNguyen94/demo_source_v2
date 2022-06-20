@@ -4,17 +4,16 @@ import './styles.scss';
 import {
   wrapper,
   setDefaultToken,
-  addListAddress,
-  getListAddressDeliveryApi,
   fetchListAddressConfig,
   saveUserInfo,
+  isWeb,
 } from '@monorepo/function-shares';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ToastContainer } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { Storage } from '@capacitor/storage';
-import { Loading } from '@monorepo/ui-shares';
+import { Loading, TabBottom } from '@monorepo/ui-shares';
 
 function App({ Component, pageProps }: AppProps) {
   const AnyComponent = Component;
@@ -43,11 +42,6 @@ function App({ Component, pageProps }: AppProps) {
     checkToken();
   }, [dispatch]);
 
-  useEffect(() => {
-    if (!loading) {
-      // route.replace('/home');
-    }
-  }, [loading]);
   return (
     <>
       <Head>

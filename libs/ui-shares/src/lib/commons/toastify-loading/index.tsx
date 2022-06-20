@@ -1,6 +1,6 @@
-import { useRef, useImperativeHandle, forwardRef, useEffect } from 'react';
-import { toast, Slide, cssTransition } from 'react-toastify';
-import { useRouter } from 'next/router';
+import { useRef, useImperativeHandle, forwardRef } from 'react';
+import { toast } from 'react-toastify';
+import { useNavigation } from '@monorepo/function-shares';
 
 type ToastifyLoadingProps = {
   id?: number;
@@ -17,7 +17,7 @@ const ToastifyLoading: React.ForwardRefRenderFunction<
   ToastifyLoadingProps
 > = (props, ref) => {
   const toastId = useRef(null);
-  const router = useRouter();
+  const { pushRaw, goBack } = useNavigation();
 
   useImperativeHandle(ref, () => ({
     show: (content: string) => {
@@ -33,7 +33,12 @@ const ToastifyLoading: React.ForwardRefRenderFunction<
         type: toast.TYPE.SUCCESS,
         isLoading: false,
         autoClose: 1000,
-        onClose: () => (route ? router.replace(route) : console.log('done')),
+        onClose: () =>
+          route
+            ? route === 'back'
+              ? goBack()
+              : pushRaw(route)
+            : console.log('done'),
       });
     },
     fail: (content: string) => {

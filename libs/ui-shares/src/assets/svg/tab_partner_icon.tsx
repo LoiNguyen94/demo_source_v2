@@ -9,7 +9,7 @@ export default function SvgTabPartnerIcon({
   colorFocus?: string;
   keyFocus?: number;
 }) {
-  const focus = keyFocus !== 2;
+  const focus = keyFocus !== 1
   return (
     <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
       <rect width="30" height="30" fill="white" />

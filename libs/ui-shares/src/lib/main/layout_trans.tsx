@@ -2,7 +2,6 @@ import { useState, ReactNode, useEffect, memo } from 'react';
 import styles from './layout.module.scss';
 import Head from 'next/head';
 import { useWindowSize } from '@monorepo/function-shares';
-import TabBottom from './tab_bottom';
 import { useRouter } from 'next/router';
 export interface LayoutTransProps {
   children?: ReactNode;
@@ -54,7 +53,7 @@ export const TransitionLayout = memo(
           <title>{title}</title>
           <meta
             name="viewport"
-            content="target-densitydpi=device-dpi, initial-scale=1.0, user-scalable=no"
+            content="initial-scale=1.0, user-scalable=no"
           />
           <meta property="og:title" content={title} key="title" />
           <meta property="og:description" content={description} />
@@ -73,8 +72,6 @@ export const TransitionLayout = memo(
           >
             {displayChildren}
           </div>
-          {/* <div className={styles['frame']}>{children}</div> */}
-          {showTab && <TabBottom width={widthFixed} />}
         </div>
       </div>
     );
