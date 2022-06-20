@@ -44,9 +44,9 @@ function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      {/* <Head>
+      <Head>
         <title>Welcome to consumer!</title>
-      </Head> */}
+      </Head>
       <main className="app">
         <AnyComponent {...pageProps} />
         <ToastContainer

@@ -14,7 +14,7 @@ import IonHome from './home/IonHome';
 import DetailProduct from './products/details/IonDetail';
 import location from './location';
 import { useAppSelector } from '@monorepo/function-shares';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const Order = () => (
   <IonPage>
@@ -31,6 +31,12 @@ const Tabs = () => {
 
   const token = useAppSelector((state) => state.auth.token);
   const isAuth = token !== undefined;
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  });
 
   return !loading ? (
     <IonTabs>

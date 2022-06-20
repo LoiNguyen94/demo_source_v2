@@ -75,6 +75,12 @@ const AppShell = () => {
 const App = () => {
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  });
+  
   return !loading ? (
     <IonApp>
       <AppShell />
