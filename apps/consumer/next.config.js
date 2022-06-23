@@ -23,9 +23,9 @@ const nextConfig = {
       },
     ];
   },
-  // compiler: {
-  //   removeConsole: true,
-  // },
+  compiler: {
+    removeConsole: true,
+  },
   nx: {
     pwa: {
       dest: 'public',
