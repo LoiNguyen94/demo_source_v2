@@ -9,7 +9,7 @@
     "consumer:export": "env-cmd -f .env.local npx nx run consumer:export",
     "start": "nx serve",
     "build": "nx build",
-    "consumer:build": "env-cmd -f .env.local npx nx build consumer --prod",
+    "consumer:build": "env-cmd -f .env.local npx nx build consumer --skip-nx-cache",
     "test": "nx test",
     "postinstall": "patch-package"
   },
