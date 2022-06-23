@@ -40,8 +40,10 @@ export function LocationScreen(props: LocationProps) {
   const [visibleSecsionDelivery, setVisibleSecsionDelivery] = useState(false);
   const [visibleWarningDefault, setVisibleWarningDefault] = useState(false);
   const [visibleConfirmDelete, setVisibleConfirmDelete] = useState(false);
+  const [flagDefaultAddress, setFlagDefaultAddress] = useState(false);
   const [done, setDone] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [dataWarning, setDataWarning] = useState<string[]>(['', '']);
   const [error, setError] = useState({
     nameInfo: '',
     phoneInfo: '',
@@ -49,15 +51,22 @@ export function LocationScreen(props: LocationProps) {
   const { widthFixed } = useWindowSize();
 
   useEffect(() => {
+    if (listAddress.length < 1 && !address['default']) {
+      dispatch(chooseItemAddress({ ...address, default: true }));
+    }
+  }, []);
+
+  useEffect(() => {
     if (type === 'edit') {
       if (
         !listAddress ||
-        Object.values(address).every((i) => i && i !== '' && i !== NaN)
+        Object.values(address).every((i) => i !== undefined && i !== '')
       )
         return;
       const callBackAddress = listAddress.filter(
         (data: any) => data?.id.toString() === id
       );
+      setFlagDefaultAddress(callBackAddress[0]?.is_default);
       const callBackData = makeDataCallBackAddress(callBackAddress[0]);
       dispatch(chooseItemAddress({ ...callBackData }));
     }
@@ -65,7 +74,7 @@ export function LocationScreen(props: LocationProps) {
 
   useEffect(() => {
     if (
-      !Object.values(address).every((i) => i !== '' && i !== NaN) ||
+      !Object.values(address).every((i) => i !== '') ||
       Object.values(error).some((i) => i !== '')
     )
       setDone(false);
@@ -125,6 +134,10 @@ export function LocationScreen(props: LocationProps) {
   const requestDeleteAddress = async () => {
     if (processing) return;
     if (address['default']) {
+      setDataWarning([
+        'Không thể xoá',
+        'Bạn không thể xoá địa chỉ mặc định. Vui lòng chọn một địa chỉ khác làm địa chỉ mặc định nếu muốn xoá địa chỉ này.',
+      ]);
       setVisibleWarningDefault(true);
       return;
     }
@@ -162,7 +175,6 @@ export function LocationScreen(props: LocationProps) {
     const addressParam = { ...getParamAddress, id: parseInt(id!) };
     try {
       const res = await updateAddressDeliveryApi(addressParam);
-      console.log(res);
       if (res?.data?.status.code === 200) {
         fetchListAddressConfig();
         dispatch(chooseItemAddress({ ...initItemAddessState }));
@@ -190,7 +202,7 @@ export function LocationScreen(props: LocationProps) {
         });
         break;
       case 'phone':
-        dispatch(chooseItemAddress({ ...address, phone: value }));
+        dispatch(chooseItemAddress({ ...address, phone: value + '' }));
         setError({ ...error, phoneInfo: _validPhone(value) });
         break;
     }
@@ -201,6 +213,15 @@ export function LocationScreen(props: LocationProps) {
   };
 
   const handleSwitchDefault = (e: any) => {
+    if (listAddress.length < 1) return;
+    if (type === 'edit' && flagDefaultAddress) {
+      setDataWarning([
+        'Không thể thay đổi',
+        'Để hủy địa chỉ mặc định này, vui lòng chọn địa chỉ khác làm địa chỉ mặc định mới.',
+      ]);
+      setVisibleWarningDefault(true);
+      return;
+    }
     dispatch(chooseItemAddress({ ...address, default: e }));
   };
 
@@ -305,13 +326,6 @@ export function LocationScreen(props: LocationProps) {
           onChange={handleSwitchDefault}
         />
       </div>
-      <ErrorOneLine
-        content={
-          !listAddress && !address['default']
-            ? 'Chọn ít nhất một địa chỉ làm địa chỉ giao hàng mặc định.'
-            : ''
-        }
-      />
       {type === 'edit' ? (
         <div
           style={{
@@ -363,7 +377,13 @@ export function LocationScreen(props: LocationProps) {
         />
       )}
       {visibleWarningDefault && (
-        <ModalWarningDefault handle={() => setVisibleWarningDefault(false)} />
+        <ModalWarningDefault
+          data={dataWarning}
+          handle={() => {
+            setVisibleWarningDefault(false);
+            setDataWarning(['', '']);
+          }}
+        />
       )}
       {visibleConfirmDelete && (
         <ModalConfirmDelete

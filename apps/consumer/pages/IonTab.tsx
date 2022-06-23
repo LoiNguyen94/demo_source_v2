@@ -8,11 +8,8 @@ import {
   IonLabel,
   IonPage,
 } from '@ionic/react';
-import { newspaper, list, home, person } from 'ionicons/icons';
-import Home from '../pages/home';
+import { newspaper, home, person } from 'ionicons/icons';
 import IonHome from './home/IonHome';
-import DetailProduct from './products/details/IonDetail';
-import location from './location';
 import { useAppSelector } from '@monorepo/function-shares';
 import { useState, useEffect } from 'react';
 

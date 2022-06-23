@@ -1,12 +1,8 @@
-import { Detail, withIonicPage } from '@monorepo/ui-shares';
-import { TransitionLayout, Header } from '@monorepo/ui-shares';
+import {  withIonicPage } from '@monorepo/ui-shares';
 import {
   getProductDetail,
-  getListProduct,
-  isWeb,
 } from '@monorepo/function-shares';
-import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import DetailComponent from './DetailComponent';
 interface DetailProps {
   match?: { params: { id: any } };
@@ -14,18 +10,20 @@ interface DetailProps {
 }
 const DetailContainer = (props: DetailProps) => {
   const [data, setData] = useState(props.detail);
+  const fetchDetail =  useCallback(async () => {
+    try {
+      const id = props?.match?.params?.id;
+      if(id) {
+        const detail = await getProductDetail(id);
+        setData(detail);
+      }
+    } catch (err) {}
+  },[props?.match,]);
   useEffect(() => {
     if (!data) {
       fetchDetail();
     }
-  }, []);
-  const fetchDetail = async () => {
-    try {
-      const id = props?.match?.params?.id;
-      const detail = await getProductDetail(id);
-      setData(detail);
-    } catch (err) {}
-  };
+  }, [fetchDetail, data]);
 
   if (!data) return null;
   return <DetailComponent detail={data} />;

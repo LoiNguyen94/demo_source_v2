@@ -34,7 +34,7 @@ export function FillNewAddressScreen(props: FillNewAddressProps) {
   useEffect(() => {
     const timeout = setTimeout(() => {
       getLatLng();
-    }, 2200);
+    }, 1000);
 
     // if this effect run again, because `value` changed, we remove the previous timeout
     return () => clearTimeout(timeout);
@@ -89,19 +89,13 @@ export function FillNewAddressScreen(props: FillNewAddressProps) {
     );
   };
 
-  const clearInput = () => {
-    dispath(
-      chooseItemAddress({
-        ...address,
-        confirmLocation: '',
-        other: '',
-      })
-    );
-    // @ts-ignore
-    input.current.focus();
-  };
-
   const confirmLocate = () => {
+    if (
+      !address['other'] ||
+      !address['ward']?.name ||
+      address['other'].trim().length < 1
+    )
+      return;
     dispath(
       chooseItemAddress({
         ...address,
@@ -184,7 +178,13 @@ export function FillNewAddressScreen(props: FillNewAddressProps) {
             <Buttons
               title="Xác nhận vị trí"
               handleClick={confirmLocate}
-              bgColor={'#EC4261'}
+              bgColor={
+                address['other'] &&
+                address['ward']?.name &&
+                address['other'].trim().length > 0
+                  ? '#EC4261'
+                  : '#B6B6B6'
+              }
               titleColor={'#FFFFFF'}
             />
           </div>

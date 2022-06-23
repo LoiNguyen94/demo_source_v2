@@ -72,19 +72,6 @@ const FormRegister: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
     );
   };
 
-  const getErrorMessage = () => {
-    return !errors.username.isValid
-      ? errors.username.msg
-      : '' || !errors.phone.isValid
-      ? errors.phone.msg
-      : '' || !errors.password.isValid
-      ? errors.password.msg
-      : '' || !errors.confirm_password.isValid
-      ? errors.confirm_password.msg
-      : '' || !msgError.isValid
-      ? msgError.msg
-      : '';
-  };
   const onFocus = () => {
     if (!msgError.isValid) {
       setMsgError({ isValid: true, msg: '' });
@@ -107,13 +94,14 @@ const FormRegister: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
           () => ({
             template: '',
             validator(_, value) {
-              if (value && value.length <= 50) {
+              if (value && value.length <= 50 && value.length > 3) {
                 setErrors((errors) => ({
                   ...errors,
                   username: { isValid: true, msg: '' },
                 }));
                 return Promise.resolve();
               }
+              
               setErrors((errors) => ({
                 ...errors,
                 username: {
@@ -121,7 +109,7 @@ const FormRegister: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
                   msg:
                     value && value.length > 50
                       ? 'Họ và tên không quá 50 ký tự'
-                      : 'Vui lòng nhập họ tên.',
+                      : 'Họ và tên quá ngắn. Vui lòng nhập 3 ký tự trở lên',
                 },
               }));
               return Promise.reject();
@@ -133,7 +121,7 @@ const FormRegister: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
           placeholder="Họ và tên"
           className="input-auth-phone"
           style={{ borderRadius: 10, backgroundColor: '#FFFFFF' }}
-          allowClear={{ clearIcon: <CloseOutlined /> }}
+          allowClear={{ clearIcon: <CloseOutlined onClick={() => form.resetFields(['username'])} /> }}
         />
       </Form.Item>
       {renderError('username')}
@@ -168,13 +156,14 @@ const FormRegister: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
       >
         <Input
           placeholder="Số điện thoại"
+          type="number"
           className="input-auth-phone"
           style={{
             borderRadius: 10,
             backgroundColor: '#FFFFFF',
             marginTop: 10,
           }}
-          allowClear={{ clearIcon: <CloseOutlined /> }}
+          allowClear={{ clearIcon: <CloseOutlined onClick={() => form.resetFields(['phone'])} /> }}
         />
       </Form.Item>
       {renderError('phone')}
@@ -287,7 +276,7 @@ const FormRegister: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
             backgroundColor: '#FFFFFF',
             marginTop: 10,
           }}
-          allowClear={{ clearIcon: <CloseOutlined /> }}
+          allowClear={{ clearIcon: <CloseOutlined onClick={() => form.resetFields(['partner_id'])} /> }}
         />
       </Form.Item>
       <div style={{ marginTop: 5, fontSize: 12, color:'#B6B6B6' }}>

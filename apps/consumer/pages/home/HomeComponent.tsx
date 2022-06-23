@@ -1,20 +1,10 @@
-import { HomeConsumer, withIonicPage, TabBottom, TabMio } from '@monorepo/ui-shares';
-import dynamic from 'next/dynamic';
+import { TabMio } from '@monorepo/ui-shares';
 import {
-  getListFlashSaleApi,
   getListProduct,
-  getProfileApi,
-  handleResponse,
   listCategoryApi,
 } from '@monorepo/function-shares';
-import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { ICategory, IProduct } from '@monorepo/model';
-interface HomeIndex {
-
-  
-}
-export const HomeIndex = (props: HomeIndex) => {
+export const HomeIndex = () => {
   const [state, setState] = useState({
     list_category: [],
     items: [],
@@ -31,15 +21,14 @@ export const HomeIndex = (props: HomeIndex) => {
           list_category: list_category,
         });
         // handleResponse({ res, success: (res) => {}, error: (res) => {} });
-      } catch (error) {}
+      } catch (error) { }
     };
     fetchData();
   }, []);
 
   return (
-     <TabMio data={state.items} list_category={state.list_category}/>
+    <TabMio data={state.items} list_category={state.list_category} />
   );
 };
 
-// export default HomeIndex;
 export default HomeIndex;

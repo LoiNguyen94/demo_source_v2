@@ -18,7 +18,7 @@ const EditAddress = (props) => {
 
   return (
     <TransitionLayout title={'Sửa địa chỉ'}>
-      <Header keyPage="add-edit-location" title="Sửa địa chỉ" />
+      <Header title="Sửa địa chỉ" />
       <LocationScreen id={id} type={'edit'} />
     </TransitionLayout>
   );

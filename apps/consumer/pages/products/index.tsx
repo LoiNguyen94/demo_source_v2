@@ -1,9 +1,7 @@
 import { TransitionLayout, Header } from '@monorepo/ui-shares';
 import {
   getListProduct,
-  imageLoader,
-  SCREEN,
-  useNavigation,
+  imageLoader
 } from '@monorepo/function-shares';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
@@ -13,14 +11,8 @@ import { useEffect, useState } from 'react';
 
 const { Meta } = Card;
 
-export interface ProductProps {
-  id: number;
-}
-
-function Products(props: ProductProps) {
+function Products() {
   const [data, setData] = useState([]);
-  const {} = props;
-  const { pushScreenParam } = useNavigation();
 
   useEffect(() => {
     fetchData();

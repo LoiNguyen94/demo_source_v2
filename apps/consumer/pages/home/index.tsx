@@ -1,7 +1,6 @@
 import { HomeConsumer, withIonicPage, TabBottom } from '@monorepo/ui-shares';
 import dynamic from 'next/dynamic';
 import {
-  getListFlashSaleApi,
   getListProduct,
   getProfileApi,
   handleResponse,
@@ -10,10 +9,8 @@ import {
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { ICategory, IProduct } from '@monorepo/model';
-interface HomeIndex {}
 
-function HomeIndex(props: HomeIndex) {
-  const {} = props;
+function HomeIndex() {
   const [category, setCategory] = useState<ICategory[]>([]);
   const [product, setProduct] = useState<IProduct[]>([]);
   const positionTab = useSelector((state) => state['TabPositionSlice']);

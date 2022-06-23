@@ -6,7 +6,6 @@ export interface ProductProps {
 }
 
 function Products(props: ProductProps) {
-  const { data } = props;
   return (
     <div>
       <TransitionLayout

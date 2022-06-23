@@ -6,9 +6,10 @@ export interface LocationItemProps {
   id?: number;
   type?: string;
   data?: IAddress;
+  goEdit?: () => void;
 }
 
-export function LocationItem({ type, id, data }: LocationItemProps) {
+export function LocationItem({ type, id, data, goEdit }: LocationItemProps) {
   const { pushRaw } = useNavigation();
   return (
     <div
@@ -46,9 +47,7 @@ export function LocationItem({ type, id, data }: LocationItemProps) {
             {type !== 'default' && (
               <a>
                 <div
-                  onClick={() => {
-                    pushRaw(`/location/edit?id=${data?.id}`);
-                  }}
+                  onClick={goEdit}
                   style={{
                     fontSize: 14,
                     fontWeight: 500,

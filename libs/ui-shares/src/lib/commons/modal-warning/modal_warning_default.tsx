@@ -4,10 +4,12 @@ import { Modal } from 'antd';
 
 export interface ModalWarningDefaultProps {
   handle(): any;
+  data: string[]; //[title,content]
 }
 
 export function ModalWarningDefault({
   // visibleParent = false,
+  data=['',''],
   handle,
 }: ModalWarningDefaultProps) {
   const { widthFixed, positionModal } = useWindowSize();
@@ -34,7 +36,7 @@ export function ModalWarningDefault({
           textAlign: 'center',
         }}
       >
-        Không thể xoá
+        {data[0]}
       </div>
       <div
         style={{
@@ -45,8 +47,7 @@ export function ModalWarningDefault({
           padding: '10px 10px 15px 10px',
         }}
       >
-        Bạn không thể xoá địa chỉ mặc định. Vui lòng chọn một địa chỉ khác làm
-        địa chỉ mặc định nếu muốn xoá địa chỉ này.
+         {data[1]}
       </div>
       <Buttons
         title="Đã hiểu"

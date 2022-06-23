@@ -1,4 +1,4 @@
-import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
+import { IonApp, IonRouterOutlet } from '@ionic/react';
 
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route } from 'react-router-dom';
@@ -39,7 +39,7 @@ const AppShell = () => {
         goBack();
       }
     });
-  }, []);
+  }, [goBack]);
   return (
     // @ts-ignore
     <IonReactRouter>
@@ -67,7 +67,6 @@ const AppShell = () => {
         <PrivateRoute path="/location" component={location} exact />
         <Route path="/location/add/fill" component={fillAddress} exact={true} />
         <Route path="/location/edit" component={editLocation} />
-        {/* <Route exact path="/" render={() => <Redirect to="/home" />} /> */}
       </IonRouterOutlet>
     </IonReactRouter>
   );
@@ -80,7 +79,7 @@ const App = () => {
       setLoading(false);
     }, 500);
   });
-  
+
   return !loading ? (
     <IonApp>
       <AppShell />

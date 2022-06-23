@@ -71,9 +71,9 @@ const ModalOtpInput: React.ForwardRefRenderFunction<Ref, ModalProps> = (
     getOtp(otp);
   };
   useEffect(() => {
-    if (otp?.length === 4) {
-      getOtp(otp);
-    }
+      // if (otp?.length === 4) {
+      //   getOtp(otp);
+      // }
     if(otp.length < 4 && !err.isValid)  {
       setErr({ isValid: true, msg: '' })
     }

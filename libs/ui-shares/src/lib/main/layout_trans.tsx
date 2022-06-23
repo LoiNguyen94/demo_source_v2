@@ -49,16 +49,14 @@ export const TransitionLayout = memo(
 
     return (
       <div>
-      <Head>
+        <Head>
           <title>{title}</title>
-          <meta
-            name="viewport"
-            content="initial-scale=1.0, user-scalable=no"
-          />
+          <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
           <meta property="og:title" content={title} key="title" />
           <meta property="og:description" content={description} />
           <meta property="og:image" content={photo} />
-        </Head>  
+          {/* <link rel="icon" href={photo} type="image/x-icon"></link> */}
+        </Head>
         <div style={{ height: height }} className={styles['container']}>
           <div
             style={{ width: widthFixed }}

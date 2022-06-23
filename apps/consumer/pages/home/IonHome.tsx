@@ -1,25 +1,20 @@
 import {
-  HomeConsumer,
   withIonicPage,
-  TabBottom,
   TabMio,
   Buttons,
 } from '@monorepo/ui-shares';
 import dynamic from 'next/dynamic';
 import {
-  getListFlashSaleApi,
   getListProduct,
-  getProfileApi,
-  handleResponse,
   listCategoryApi,
   SCREEN,
   useAppSelector,
   useNavigation,
+  useWindowSize,
 } from '@monorepo/function-shares';
-import { useEffect, useState, memo } from 'react';
-import { ICategory, IProduct } from '@monorepo/model';
-interface HomeIndex {}
-export const IonHome = memo((props: HomeIndex) => {
+import { useEffect, useState } from 'react';
+export const IonHome = () => {
+  const { widthFixed } = useWindowSize();
   const { push } = useNavigation();
   const token = useAppSelector((state) => state.auth.token);
   const isAuth = token !== undefined;
@@ -38,10 +33,10 @@ export const IonHome = memo((props: HomeIndex) => {
           list_category: list_category,
         });
         // handleResponse({ res, success: (res) => {}, error: (res) => {} });
-      } catch (error) {}
+      } catch (error) { }
     };
     fetchData();
-    return () => {};
+    return () => { };
   }, []);
   const goToLogin = () => {
     push(SCREEN.login);
@@ -59,17 +54,29 @@ export const IonHome = memo((props: HomeIndex) => {
             justifyContent: 'center',
           }}
         >
-          <Buttons
-            title="Đăng nhập ngay"
-            handleClick={goToLogin}
-            bgColor={'#EC4261'}
-            titleColor={'#FFFFFF'}
-          />
+          <div
+            style={{
+              backgroundColor: '#ffffff',
+              display: 'flex',
+              justifyContent: 'space-around',
+              height: '80px',
+              borderRadius: '12px 12px 0px 0px',
+              width: widthFixed,
+              padding: '12px 20px 0px 20px',
+            }}
+          >
+            <Buttons
+              title="Đăng nhập ngay"
+              handleClick={goToLogin}
+              bgColor={'#EC4261'}
+              titleColor={'#FFFFFF'}
+            />
+          </div>
         </div>
       ) : null}
     </>
   );
-});
+};
 
 export default dynamic(() => Promise.resolve(withIonicPage(IonHome)), {
   ssr: false,

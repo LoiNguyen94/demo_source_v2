@@ -1,19 +1,28 @@
-import { MainLayout, Header, withIonicPage } from '@monorepo/ui-shares';
+import { Header, withIonicPage, TransitionLayout } from '@monorepo/ui-shares';
 import { useCallback, useRef, useState } from 'react';
 import { ModalOtp, TypeModalOtpInput, Loading } from '@monorepo/ui-shares';
 import ForgetForm, { ForgotData, ForgotFormType } from './forgot_form';
+import { Storage } from '@capacitor/storage';
 import {
   sendOtpApi,
   forgotPasswordApi,
   phoneExistApi,
   handleResponse,
   useWindowSize,
+  useNavigation,
+  isWeb,
+  SCREEN,
+  loginApi,
+  loginSuccess,
+  setDefaultToken,
+  fetchListAddressConfig,
 } from '@monorepo/function-shares';
 import dynamic from 'next/dynamic';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
 function ForgetPassword() {
-  const route = useRouter();
+  const dispatch = useDispatch()
+  const { goBack, replaceScreen, push } = useNavigation();
   const { height, widthFixed } = useWindowSize();
   const refModalOtp = useRef<TypeModalOtpInput>();
   const [data, setData] = useState<ForgotData>();
@@ -22,6 +31,54 @@ function ForgetPassword() {
   const showModal = useCallback(() => {
     refModalOtp.current.show();
   }, []);
+
+  const goToHome = () => {
+    if(isWeb) {
+      replaceScreen(SCREEN.home);
+    }else {
+      goBack()
+    }
+  }
+  
+  const login =(phone: string, password: string) => {
+    loginApi(phone, password)
+    .then(async (res) => {
+      handleResponse({
+        res,
+        success: async (res) => {
+          dispatch(
+            loginSuccess({
+              token: res.data.data.token,
+              profile: res.data.data.profile,
+            })
+          );
+          setLoading(false);
+          await Storage.set({ key: 'token', value: res.data.data.token });
+          await Storage.set({
+            key: 'profile',
+            value: JSON.stringify(res.data.data.profile),
+          });
+          setDefaultToken(res.data.data.token);
+          fetchListAddressConfig();
+          goToHome()
+        },
+        error: (res) => {
+          refForm.current.setMessageError({
+            isValid: false,
+            msg: res?.data?.data?.message ?? res?.data?.status?.message,
+          });
+          setLoading(false);
+        },
+      });
+    })
+    .catch((err) => {
+      setLoading(false);
+      refForm.current.setMessageError({
+        isValid: false,
+        msg: err?.response?.data?.message ?? '',
+      });
+    });
+  }
   const updateNewPwd = async (value: string) => {
     try {
       const res = await forgotPasswordApi({
@@ -33,7 +90,7 @@ function ForgetPassword() {
         res,
         success: () => {
           toast.success('Thay đổi mật khẩu thành công');
-          route.back();
+          login(data.phone, data.password)
           refModalOtp.current.hide();
         },
         error: () => {
@@ -84,7 +141,12 @@ function ForgetPassword() {
     }
   };
   return (
-    <MainLayout title="Tất cả sản phẩm" description="Mua mọi thứ" photo="">
+    <TransitionLayout
+      title="Tất cả sản phẩm"
+      description="Mua mọi thứ"
+      photo=""
+    >
+      <>
         <Header title={'Quên mật khẩu'} />
         <div
           style={{
@@ -107,7 +169,8 @@ function ForgetPassword() {
           phone={data?.phone ?? ''}
         />
         {isLoading ? <Loading /> : null}
-    </MainLayout>
+      </>
+    </TransitionLayout>
   );
 }
 

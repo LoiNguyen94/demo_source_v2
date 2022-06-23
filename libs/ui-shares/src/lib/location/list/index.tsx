@@ -1,15 +1,21 @@
 import { WarningOutlined, PlusOutlined } from '@ant-design/icons';
 import Item from '../component/item_list';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { IAddress } from '@monorepo/model';
-import { SCREEN, useNavigation } from '@monorepo/function-shares';
+import {
+  SCREEN,
+  useNavigation,
+  chooseItemAddress,
+  initItemAddessState,
+} from '@monorepo/function-shares';
 export interface LocationListProps {
   id?: number;
 }
 
 export function LocationListScreen(props: LocationListProps) {
-  const { push } = useNavigation();
+  const { push, pushRaw } = useNavigation();
+  const dispatch = useDispatch();
   const addressList = useSelector((state: any) => state['address']);
 
   const [defaultAdd, setDefaultAdd] = useState();
@@ -21,6 +27,20 @@ export function LocationListScreen(props: LocationListProps) {
     );
     setDefaultAdd(defaultAddress ? defaultAddress[0] : '');
   }, [addressList]);
+
+  const restItemAddress = () => {
+    dispatch(chooseItemAddress({ ...initItemAddessState }));
+  };
+
+  const createAddress = () => {
+    restItemAddress();
+    push(SCREEN.add_new_address);
+  };
+
+  const edit = (id: string) => {
+    restItemAddress();
+    pushRaw(`/location/edit?id=${id}`);
+  };
 
   return (
     <div style={{ marginTop: 85, paddingBottom: 85 }}>
@@ -70,7 +90,13 @@ export function LocationListScreen(props: LocationListProps) {
       {addressList &&
         Object.keys(addressList).length !== 0 &&
         addressList?.map((item: IAddress) => (
-          <Item key={item.id} data={item} />
+          <Item
+            key={item.id}
+            data={item}
+            goEdit={() => {
+              edit(item.id);
+            }}
+          />
         ))}
 
       <div
@@ -84,7 +110,7 @@ export function LocationListScreen(props: LocationListProps) {
         Thêm địa chỉ
       </div>
       <div
-        onClick={() => push(SCREEN.add_new_address)}
+        onClick={() => createAddress()}
         style={{ padding: '16px', backgroundColor: 'white' }}
       >
         <div style={{ cursor: 'pointer' }}>

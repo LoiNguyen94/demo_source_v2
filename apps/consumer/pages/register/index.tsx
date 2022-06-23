@@ -2,7 +2,6 @@ import { Capacitor } from '@capacitor/core';
 import { useCallback, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import {
-  MainLayout,
   Header,
   SvgList,
   RegisterForm,
@@ -10,13 +9,16 @@ import {
   RegisterFormType,
   Loading,
   withIonicPage,
+  TransitionLayout,
 } from '@monorepo/ui-shares';
 import { Storage } from '@capacitor/storage';
 import { ModalOtp, TypeModalOtpInput } from '@monorepo/ui-shares';
 import {
+  fetchListAddressConfig,
   genRefererIdApi,
   getProfileApi,
   handleResponse,
+  isWeb,
   loginSuccess,
   phoneExistApi,
   SCREEN,
@@ -29,12 +31,10 @@ import {
 import { SignUpParam } from '@monorepo/function-shares';
 import styles from './register.module.scss';
 import { Row } from 'antd';
-import Link from 'next/link';
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 
-function Register() {
+function Register(props) {
   const refModalOtp = useRef<TypeModalOtpInput>();
   const [isLoading, setLoading] = useState<boolean>(false);
   const [registerData, setRegisterData] = useState<SignUpParam>();
@@ -81,7 +81,7 @@ function Register() {
       } else {
         refForm.current.setMessageError({
           isValid: false,
-          msg: 'Tài khoản đã tồn tại',
+          msg: 'Số điện thoại này đã tồn tại',
         });
       }
       setLoading(false);
@@ -93,6 +93,14 @@ function Register() {
       });
     }
   };
+
+  const goToHome = () => {
+    if(isWeb) {
+      replaceScreen(SCREEN.home);
+    }else {
+      goBack()
+    }
+  }
   const getOtp = useCallback(
     async (value: string) => {
       try {
@@ -104,6 +112,7 @@ function Register() {
           handleResponse({
             res: response,
             success: () => {
+              toast.success('Đăng ký thành công');
               dispatch(
                 loginSuccess({
                   token: res.data.data?.token,
@@ -115,10 +124,11 @@ function Register() {
                 key: 'profile',
                 value: JSON.stringify(response.data.data?.profile ?? {}),
               });
-              replaceScreen(SCREEN.home);
+              fetchListAddressConfig();
+              goToHome()
             },
             error: () => {
-              replaceScreen(SCREEN.home);
+              goToHome()
             },
           });
         } else {
@@ -134,60 +144,64 @@ function Register() {
         );
       }
     },
-    [registerData]
+    [registerData, dispatch, replaceScreen]
   );
   return (
-    <div
-      style={{
-        display: 'flex',
-        width: widthFixed,
-        flex: 1,
-        flexDirection: 'column',
-        height: height,
-        backgroundColor: '#f5f6f9',
-      }}
+    <TransitionLayout
+      title="Tất cả sản phẩm"
+      description="Mua mọi thứ"
+      photo=""
     >
-      <Header title={'Đăng ký tài khoản'} />
       <div
         style={{
           display: 'flex',
-          flexDirection: 'column',
+          width: widthFixed,
           flex: 1,
-          alignItems: 'center',
+          flexDirection: 'column',
+          height: height,
+          backgroundColor: '#f5f6f9',
         }}
       >
-        <div style={{ marginTop: 120 }}>
-          <SvgList.SvgMioIcon />
+        <Header title={'Đăng ký tài khoản'} />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            flex: 1,
+            alignItems: 'center',
+          }}
+        >
+          <div style={{ marginTop: 120 }}>
+            <SvgList.SvgMioIcon />
+          </div>
+          <RegisterForm onSubmit={submit} ref={refForm} />
+          <div className={styles['service-privacy-note']}>
+            Bằng việc đăng ký, bạn đã đồng ý với
+          </div>
+          <Row className={styles['service-privacy-note']}>
+            <div style={{ color: '#f0224f', marginRight: 4 }}>
+              Điều khoản Dịch vụ
+            </div>{' '}
+            &
+            <div style={{ color: '#f0224f', marginLeft: 4, marginRight: 4 }}>
+              Chính sách Riêng tư
+            </div>{' '}
+            của Mio.
+          </Row>
         </div>
-        <RegisterForm onSubmit={submit} ref={refForm} />
-        <div className={styles['service-privacy-note']}>
-          Bằng việc đăng ký, bạn đã đồng ý với
-        </div>
-        <Row className={styles['service-privacy-note']}>
-          <div style={{ color: '#f0224f', marginRight: 4 }}>
-            Điều khoản Dịch vụ
-          </div>{' '}
-          &
-          <div style={{ color: '#f0224f', marginLeft: 4, marginRight: 4 }}>
-            Chính sách Riêng tư
-          </div>{' '}
-          của Mio.
-        </Row>
+          <div className={styles['login-form-register']} onClick={() => goBack()}>
+            Bạn đã có tài khoản?
+            <div className={styles['btn-register']}>Đăng nhập</div>
+          </div>
+        <ModalOtp
+          getOtp={getOtp}
+          resendOtp={resendOtp}
+          ref={refModalOtp}
+          phone={registerData?.phone}
+        />
+        {isLoading ? <Loading /> : null}
       </div>
-      <Link href="/login" passHref>
-        <div className={styles['login-form-register']} onClick={()=> goBack()}>
-          Bạn đã có tài khoản?
-          <div className={styles['btn-register']}>Đăng nhập</div>
-        </div>
-      </Link>
-      <ModalOtp
-        getOtp={getOtp}
-        resendOtp={resendOtp}
-        ref={refModalOtp}
-        phone={registerData?.phone}
-      />
-      {isLoading ? <Loading /> : null}
-    </div>
+    </TransitionLayout>
   );
 }
 

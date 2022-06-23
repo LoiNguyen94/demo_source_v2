@@ -118,6 +118,7 @@ const FormForgetPassword: ForwardRefRenderFunction<Ref, Props> = (
       >
         <Input
           placeholder="Số điện thoại"
+          type="number"
           className="input-auth-phone"
           allowClear={{ clearIcon: <CloseOutlined /> }}
           style={{ borderRadius: 10, backgroundColor: '#FFFFFF' }}

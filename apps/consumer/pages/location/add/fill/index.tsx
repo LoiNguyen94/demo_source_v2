@@ -14,11 +14,11 @@ function FillAddressScreen(props: FillAddressProps) {
   return (
     <div>
       <TransitionLayout
-        title="Danh sách địa chỉ"
+        title="Nhập địa chỉ của bạn"
         description="Địa chỉ giao hàng"
         photo=""
       >
-        <Header title={'Danh sách địa chỉ'} />
+        <Header title={'Nhập địa chỉ của bạn'} />
         <FillNewAddressScreen />
       </TransitionLayout>
     </div>

@@ -9,8 +9,6 @@ import {
   signOut,
   useAppSelector,
   useNavigation,
-  chooseItemAddress,
-  initItemAddessState,
 } from '@monorepo/function-shares';
 export interface HeaderShortProps {
   title: string;
@@ -20,17 +18,8 @@ export interface HeaderShortProps {
 
 const HeaderShort = ({ title, subtitle, keyPage }: HeaderShortProps) => {
   const { goBack } = useNavigation();
-  const dispatch = useDispatch();
 
   const handelBack = () => {
-    switch (keyPage) {
-      case 'add-edit-location': {
-        dispatch(chooseItemAddress({ ...initItemAddessState }));
-        break;
-      }
-      default:
-        break;
-    }
     goBack();
   };
 
@@ -98,10 +87,10 @@ const HeaderHome = ({ subtitle }: HeaderHomeProps) => {
           <div
             className={'click_effect'}
             style={{ marginRight: 20 }}
-            onClick={() => { 
-                dispatch(signOut(''))
-                replaceScreen(SCREEN.root)
-              }}
+            onClick={() => {
+              dispatch(signOut(''));
+              replaceScreen(SCREEN.root);
+            }}
           >
             <Badge size="default" count={0}>
               <SvgList.SvgBell />

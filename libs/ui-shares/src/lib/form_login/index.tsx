@@ -29,7 +29,7 @@ type Ref = {
 };
 const FormLogin: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
   const { onSubmit } = props;
-  const { push } = useNavigation();
+  const { replaceScreen } = useNavigation();
   const onFinish = async (values: { phone: string; password: string }) => {
     onSubmit(values);
   };
@@ -72,10 +72,10 @@ const FormLogin: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
     );
   };
 
-  const goToForget= () => {
-    push(SCREEN.forget_password)
+  const goToForget = () => {
+    replaceScreen(SCREEN.forget_password)
   }
-  
+
   return (
     <Form
       name="normal_login"
@@ -115,13 +115,14 @@ const FormLogin: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
       >
         <Input
           placeholder="Số điện thoai"
+          type="number"
           className="input-auth-phone"
           style={{
             borderRadius: 10,
             backgroundColor: '#FFFFFF',
             marginTop: 20,
           }}
-          allowClear={{ clearIcon: <CloseOutlined /> }}
+          allowClear={{ clearIcon: <CloseOutlined onClick={() => form.resetFields(['phone'])} /> }}
         />
       </Form.Item>
       {renderError('phone')}
@@ -210,7 +211,7 @@ const FormLogin: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
         >
           Đăng nhập
         </Button>
-          <div className={styles['login-form-forget']} onClick={goToForget}>Quên mật khẩu</div>
+        <div className={styles['login-form-forget']} onClick={goToForget}>Quên mật khẩu</div>
       </Form.Item>
     </Form>
   );

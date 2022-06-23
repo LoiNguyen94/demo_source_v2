@@ -60,7 +60,7 @@ export function FlashSale({ id, data }: FlashSaleProps) {
             </div>
           </div>
           <Row
-            style={{ marginLeft: 0, marginRight: 0, marginBottom: 16 }}
+            style={{ marginLeft: 0, marginRight: 0, marginBottom: 16, paddingBottom: 86 }}
             gutter={[16, 16]}
           >
             {data &&

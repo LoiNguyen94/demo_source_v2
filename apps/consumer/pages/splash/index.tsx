@@ -1,5 +1,5 @@
 import { useWindowSize } from '@monorepo/function-shares';
-import { Loading, SvgList, TransitionLayout } from '@monorepo/ui-shares';
+import { Loading, SvgList } from '@monorepo/ui-shares';
 
 export function Splash() {
   const { height, widthFixed } = useWindowSize();

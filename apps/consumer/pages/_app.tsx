@@ -6,20 +6,15 @@ import {
   setDefaultToken,
   fetchListAddressConfig,
   saveUserInfo,
-  isWeb,
 } from '@monorepo/function-shares';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { Storage } from '@capacitor/storage';
-import { Loading, TabBottom } from '@monorepo/ui-shares';
 
 function App({ Component, pageProps }: AppProps) {
   const AnyComponent = Component;
-  const route = useRouter();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function checkToken() {
@@ -36,7 +31,6 @@ function App({ Component, pageProps }: AppProps) {
           })
         );
       }
-      setLoading(false);
       fetchListAddressConfig();
     }
     checkToken();
@@ -46,6 +40,7 @@ function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>Welcome to consumer!</title>
+        <link rel="icon" href="/icon.ico" type="image/x-icon"></link>
       </Head>
       <main className="app">
         <AnyComponent {...pageProps} />
@@ -61,5 +56,4 @@ function App({ Component, pageProps }: AppProps) {
   );
 }
 
-// export default App;
 export default wrapper.withRedux(App);

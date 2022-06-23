@@ -19,10 +19,8 @@ import {
 } from '@monorepo/function-shares';
 import styles from './login.module.scss';
 import { Storage } from '@capacitor/storage';
-import { useRouter } from 'next/router';
 import { loginSuccess } from '@monorepo/function-shares';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import { useDispatch } from 'react-redux';
 import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -32,7 +30,7 @@ export interface LoginProps {
 }
 
 function LoginScreen(props: LoginProps) {
-  const { goBack, push } = useNavigation();
+  const { goBack, push, replaceScreen } = useNavigation();
   const dispatch = useDispatch();
   const refForm = useRef<LoginFormType>();
   const { height, widthFixed } = useWindowSize();
@@ -80,7 +78,7 @@ function LoginScreen(props: LoginProps) {
       });
   };
   const goToRegister = () => {
-    push(SCREEN.register);
+    replaceScreen(SCREEN.register);
   };
   return (
     <TransitionLayout
