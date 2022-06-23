@@ -94,7 +94,7 @@ const FormRegister: ForwardRefRenderFunction<Ref, Props> = (props, ref) => {
           () => ({
             template: '',
             validator(_, value) {
-              if (value && value.length <= 50 && value.length > 3) {
+              if (value && value.length <= 50 && value.length >= 3) {
                 setErrors((errors) => ({
                   ...errors,
                   username: { isValid: true, msg: '' },
